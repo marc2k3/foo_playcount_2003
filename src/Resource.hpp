@@ -1,0 +1,26 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Visual C++ generated include file.
+// Used by foo_playcount_2003.rc
+//
+
+#ifndef IDC_STATIC
+#define IDC_STATIC -1
+#endif
+
+#define IDD_DIALOG_INPUTBOX 100
+#define IDC_BTN_PRESETS 102
+#define IDC_BTN_CLEAR 103
+
+#define IDC_LABEL_PROMPT 110
+#define IDC_LABEL_ADDED 111
+#define IDC_LABEL_FIRST_PLAYED 112
+#define IDC_LABEL_LAST_PLAYED 113
+#define IDC_LABEL_PLAYCOUNT 114
+
+#define IDC_COMBO_ADDED 120
+#define IDC_COMBO_FIRST_PLAYED 121
+#define IDC_COMBO_LAST_PLAYED 122
+#define IDC_COMBO_PLAYCOUNT 123
+
+#define ID_MENU_FOO_PLAYCOUNT 130
+#define ID_MENU_FOO_LASTFM_PLAYCOUNT_SYNC 131

@@ -1,0 +1,166 @@
+#include "stdafx.hpp"
+#include "DialogInputBox.hpp"
+#include "ImportExport.hpp"
+
+namespace
+{
+	static const std::vector<Component::MenuItem> context_items =
+	{
+		{ &guids::context_edit, "Edit..." },
+		{ &guids::context_love, "Love" },
+		{ &guids::context_unlove, "Unlove" },
+		{ &guids::context_clear_all, "Clear all" },
+		{ &guids::context_file_import, "Import from file" },
+		{ &guids::context_file_export, "Export to file" },
+	};
+
+	class ContextMenu : public contextmenu_item_simple
+	{
+	public:
+		GUID get_item_guid(uint32_t index) final
+		{
+			if (index >= context_items.size()) FB2K_BugCheck();
+
+			return *context_items[index].guid;
+		}
+
+		GUID get_parent() final
+		{
+			return guids::context_group;
+		}
+
+		bool context_get_display(uint32_t index, metadb_handle_list_cref, pfc::string_base& out, uint32_t&, const GUID&) final
+		{
+			if (index >= context_items.size()) FB2K_BugCheck();
+
+			get_item_name(index, out);
+			return true;
+		}
+
+		bool get_item_description(uint32_t index, pfc::string_base& out) final
+		{
+			if (index >= context_items.size()) FB2K_BugCheck();
+
+			get_item_name(index, out);
+			return true;
+		}
+
+		uint32_t get_num_items() final
+		{
+			return static_cast<uint32_t>(context_items.size());
+		}
+
+		void context_command(uint32_t index, metadb_handle_list_cref handles, const GUID&) final
+		{
+			switch (index)
+			{
+			case 0:
+				edit(handles);
+				break;
+			case 1:
+			case 2:
+				love(handles, index == 1 ? 1 : 0);
+				break;
+			case 3:
+				PlaybackStatistics::clear(handles);
+				break;
+			case 4:
+				ImportExport::from_file(handles);
+				break;
+			case 5:
+				ImportExport::to_file(handles);
+				break;
+			}
+		}
+
+		void get_item_name(uint32_t index, pfc::string_base& out) final
+		{
+			if (index >= context_items.size()) FB2K_BugCheck();
+
+			out = context_items[index].name;
+		}
+
+	private:
+		void edit(metadb_handle_list_cref handles)
+		{
+			modal_dialog_scope scope;
+			if (!scope.can_create()) return;
+
+			auto wnd = core_api::get_main_window();
+			scope.initialize(wnd);
+
+			CDialogInputBox dlg;
+			if (dlg.DoModal(wnd) != IDOK) return;
+
+			titleformat_object_ptr obj;
+			titleformat_compiler::get()->compile_safe(obj, pfc::format(dlg.m_first_played, "|", dlg.m_last_played, "|", dlg.m_added, "|", dlg.m_playcount));
+
+			PlaybackStatistics::HashList to_refresh;
+			PlaybackStatistics::HashSet hash_set;
+			auto client = MetadbIndex::client();
+			auto ptr = PlaybackStatistics::api()->begin_transaction();
+
+			for (auto&& handle : handles)
+			{
+				metadb_index_hash hash{};
+				if (client->hashHandle(handle, hash) && hash_set.emplace(hash).second)
+				{
+					pfc::string8 str;
+					handle->format_title(nullptr, str, obj, nullptr);
+
+					pfc::string_list_impl list;
+					pfc::splitStringByChar(list, str, '|');
+					auto f = PlaybackStatistics::get_fields(hash);
+
+					const auto first_played = PlaybackStatistics::string_to_timestamp(list[0]);
+					if (first_played != UINT_MAX) f.first_played = first_played;
+
+					const auto last_played = PlaybackStatistics::string_to_timestamp(list[1]);
+					if (last_played != UINT_MAX) f.last_played = last_played;
+
+					const auto added = PlaybackStatistics::string_to_timestamp(list[2]);
+					if (added != UINT_MAX) f.added = added;
+
+					const pfc::string8 pc = list[3];
+					if (pfc::string_is_numeric(pc))
+					{
+						f.playcount = pfc::atoui_ex(pc, str.get_length());
+					}
+
+					if (f.playcount == 0)
+					{
+						f.first_played = 0;
+						f.last_played = 0;
+					}
+
+					PlaybackStatistics::set_fields(ptr, hash, f);
+					to_refresh.add_item(hash);
+				}
+			}
+
+			ptr->commit();
+			PlaybackStatistics::refresh(to_refresh);
+		}
+
+		void love(metadb_handle_list_cref handles, uint32_t value)
+		{
+			PlaybackStatistics::HashList to_refresh;
+			const auto hashes = PlaybackStatistics::get_hashes(handles);
+			auto ptr = PlaybackStatistics::api()->begin_transaction();
+
+			for (auto&& hash : hashes)
+			{
+				auto f = PlaybackStatistics::get_fields(hash);
+				f.loved = value;
+				PlaybackStatistics::set_fields(ptr, hash, f);
+				to_refresh.add_item(hash);
+			}
+
+			ptr->commit();
+			PlaybackStatistics::refresh(to_refresh);
+		}
+	};
+
+	static contextmenu_group_popup_factory g_context_group(guids::context_group, contextmenu_groups::root, Component::name, 0);
+	FB2K_SERVICE_FACTORY(ContextMenu);
+}
