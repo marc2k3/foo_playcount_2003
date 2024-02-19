@@ -1,5 +1,11 @@
 name: build
-on: push
+on:
+  push:
+    paths:
+      - '!docs/**'
+      - '!build.yml'
+    branches:
+      - main
 jobs:
   build:
     name: ${{ matrix.project }}
