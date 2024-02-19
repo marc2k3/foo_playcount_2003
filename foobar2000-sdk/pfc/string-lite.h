@@ -16,8 +16,6 @@ namespace pfc {
 		stringLite(tagNoShrink) { this->setNoShrink(); }
 		stringLite(tagPrealloc const& tag) { this->prealloc(tag.amount); }
 		stringLite() {}
-		stringLite( std::string_view p ) { set_string( p.data(), p.length() ); }
-		stringLite( const std::string & p ) { set_string( p.c_str(), p.length() ); }
 		stringLite( const stringLite & other ) { copy(other); }
 		stringLite( stringLite && other ) noexcept { move(other); }
 		stringLite( const char * p, size_t len = SIZE_MAX ) { set_string( p, len ); }
@@ -32,7 +30,6 @@ namespace pfc {
 
 		const char * get_ptr() const { return m_ptr; }
 		operator const char*() const { return m_ptr; }
-		operator std::string_view() const { return m_ptr; }
 		const char* c_str() const { return m_ptr; }
 		const char* ptr() const { return m_ptr; }
 		void add_string(const char * p_string,t_size p_string_size = SIZE_MAX);

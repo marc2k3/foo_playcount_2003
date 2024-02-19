@@ -264,7 +264,6 @@ namespace pfc {
 	string8 format_mask(bit_array const& mask, size_t n);
 }
 
-inline pfc::string_base & operator<<(pfc::string_base & p_fmt,const std::string & p_source) {p_fmt.add_string_(p_source.c_str()); return p_fmt;}
 inline pfc::string_base & operator<<(pfc::string_base & p_fmt,const char * p_source) {p_fmt.add_string_(p_source); return p_fmt;}
 	   pfc::string_base & operator<<(pfc::string_base & p_fmt,const wchar_t* p_source); // string_conv.cpp
 inline pfc::string_base & operator<<(pfc::string_base & p_fmt,pfc::string_part_ref source) {p_fmt.add_string(source.m_ptr, source.m_len); return p_fmt;}

@@ -46,8 +46,6 @@ namespace pfc {
 
 		void convert_to_lower_ascii(const char* src, char replace = '?');
 
-		inline const string_base& operator= (std::string_view src) { set_string_(src.data()); return *this; }
-		inline const string_base& operator= (const std::string& src) { set_string_(src.c_str()); return *this; }
 		inline const string_base& operator= (const char* src) { set_string_(src); return *this; }
 		inline const string_base& operator+= (const char* src) { add_string_(src); return *this; }
 		inline const string_base& operator= (const string_base& src) { set_string(src); return *this; }
