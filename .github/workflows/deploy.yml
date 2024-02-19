@@ -1,6 +1,9 @@
 name: deploy
 on:
   push:
+    paths:
+      - 'docs/**'
+      - 'build.yml'
     branches:
       - main
 jobs:
