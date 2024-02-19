@@ -151,8 +151,8 @@ The file path must be relative to the user profile folder and it must be `UTF8`.
 of `0.1` `Final`, with or without `BOM` is fine.
 
 ## Changes
-### 0.1.2 (unreleased)
-- Fix potentially misleading file import error. If no matches were found, it was reported that no matching `Media Library` items were found which is not the case for context based selections.
+### 0.1.2
+- Minor file import tweaks.
 
 ### 0.1.1
 - Fix bug with context menu items for marking selections as loved/unloved.
