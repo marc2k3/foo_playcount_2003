@@ -79,7 +79,7 @@ pfc::string8 ImportExport::from_file(metadb_handle_list_cref handles, const pfc:
 
 				if (!Component::simple_mode)
 				{
-					f.timestamps = JSON(v).dump();
+					f.timestamps = JSON(v).dump().c_str();
 				}
 
 				f.first_played = v[0];
