@@ -44,7 +44,7 @@ jobs:
         copy src\x64\Release\${{ matrix.project }}.pdb ..\component\x64
 
     - name: Upload with pdb
-      #if: startsWith(github.ref, 'refs/tags')
+      if: startsWith(github.ref, 'refs/tags')
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.project }}-${{ github.ref_name }}-with-pdb
