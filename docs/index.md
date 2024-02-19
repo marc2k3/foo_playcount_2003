@@ -3,15 +3,20 @@ hide: navigation
 ---
 
 # Playcount 2003
-
 [Download :material-download:](https://github.com/marc2k3/foo_playcount_2003/releases){ .md-button }
 
-!!! note
-	The minimum requirement is `Windows 7+` and `foobar2000` `2.1+`
+## Requirements
+`foobar2000` `2.1` or later. `32bit` and `64bit` are both supported.
 
 ## Overview
 This component uses the same database backend that `foo_playcount` utilises
 for logging plays but has many more advanced features and fewer limitations.
+
+- Playcounts and dates can edited for any context menu selection.
+- Data can be imported from file tags or fields provided by other components.
+- The current time is available via title formatting as a full date time string or Unix timetamp.
+- First played, last played and added are all available as Unix timestamps.
+- How records are bound to tracks can be configured in the `Advanced Preferences`.
 
 ## Advanced Preferences
 The first thing you'll want to do after installing this is check `File>Preferences>Advanced>Tools>Playcount 2003`.
