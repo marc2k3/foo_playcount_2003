@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - '!docs/**'
-      - '!build.yml'
+      - '!mkdocs.yml'
     branches:
       - main
 jobs:
