@@ -22,6 +22,7 @@ public:
 	static Fields get_fields(metadb_index_hash hash);
 	static HashSet get_hashes(metadb_handle_list_cref handles);
 	static JSON get_timestamps_array(const Fields& f);
+	static bool update_value(uint32_t new_value, uint32_t& old_value);
 	static metadb_index_manager_v2::ptr api();
 	static pfc::string8 timestamp_to_string(uint64_t ts);
 	static uint32_t get_total_playcount(metadb_handle_list_cref handles, track_property_provider_v5_info_source& source);

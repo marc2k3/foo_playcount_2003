@@ -81,6 +81,41 @@ namespace
 		}
 
 	private:
+		bool parse_tf(const pfc::string8& str, PlaybackStatistics::Fields& f)
+		{
+			pfc::string_list_impl list;
+			pfc::splitStringByChar(list, str, '|');
+			bool changed{};
+
+			const auto first_played = PlaybackStatistics::string_to_timestamp(list[0]);
+			if (PlaybackStatistics::update_value(first_played, f.first_played)) changed = true;
+
+			const auto last_played = PlaybackStatistics::string_to_timestamp(list[1]);
+			if (PlaybackStatistics::update_value(last_played, f.last_played)) changed = true;
+
+			const auto added = PlaybackStatistics::string_to_timestamp(list[2]);
+			if (PlaybackStatistics::update_value(added, f.added)) changed = true;
+
+			const pfc::string8 pc = list[3];
+			if (pfc::string_is_numeric(pc))
+			{
+				const auto playcount = pfc::atoui_ex(pc, str.get_length());
+				if (playcount != f.playcount)
+				{
+					f.playcount = playcount;
+					changed = true;
+
+					if (f.playcount == 0)
+					{
+						f.first_played = 0;
+						f.last_played = 0;
+					}
+				}
+			}
+
+			return changed;
+		}
+
 		void import_from_dialog_tf(metadb_handle_list_cref handles, const pfc::string8& tf)
 		{
 			titleformat_object_ptr obj;
@@ -90,47 +125,34 @@ namespace
 			PlaybackStatistics::HashSet hash_set;
 			auto client = MetadbIndex::client();
 			auto ptr = PlaybackStatistics::api()->begin_transaction();
+			size_t unique_ids{};
 
 			for (auto&& handle : handles)
 			{
 				metadb_index_hash hash{};
 				if (client->hashHandle(handle, hash) && hash_set.emplace(hash).second)
 				{
+					unique_ids++;
+
 					pfc::string8 str;
 					handle->format_title(nullptr, str, obj, nullptr);
-
-					pfc::string_list_impl list;
-					pfc::splitStringByChar(list, str, '|');
 					auto f = PlaybackStatistics::get_fields(hash);
 
-					const auto first_played = PlaybackStatistics::string_to_timestamp(list[0]);
-					if (first_played != UINT_MAX) f.first_played = first_played;
-
-					const auto last_played = PlaybackStatistics::string_to_timestamp(list[1]);
-					if (last_played != UINT_MAX) f.last_played = last_played;
-
-					const auto added = PlaybackStatistics::string_to_timestamp(list[2]);
-					if (added != UINT_MAX) f.added = added;
-
-					const pfc::string8 pc = list[3];
-					if (pfc::string_is_numeric(pc))
+					if (parse_tf(str, f))
 					{
-						f.playcount = pfc::atoui_ex(pc, str.get_length());
+						PlaybackStatistics::set_fields(ptr, hash, f);
+						to_refresh.add_item(hash);
 					}
-
-					if (f.playcount == 0)
-					{
-						f.first_played = 0;
-						f.last_played = 0;
-					}
-
-					PlaybackStatistics::set_fields(ptr, hash, f);
-					to_refresh.add_item(hash);
 				}
 			}
 
-			ptr->commit();
-			PlaybackStatistics::refresh(to_refresh);
+			if (to_refresh.get_count() > 0)
+			{
+				ptr->commit();
+				PlaybackStatistics::refresh(to_refresh);
+			}
+
+			FB2K_console_formatter() << Component::name << ": " << handles.get_count() << " items were selected and " << unique_ids << " unique ids were found. Of those, " << to_refresh.get_count() << " were updated.";
 		}
 
 		void init_dialog(metadb_handle_list_cref handles)

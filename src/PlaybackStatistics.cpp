@@ -54,6 +54,14 @@ JSON PlaybackStatistics::get_timestamps_array(const Fields& f)
 	return timestamps;
 }
 
+bool PlaybackStatistics::update_value(uint32_t new_value, uint32_t& old_value)
+{
+	if (new_value == UINT_MAX || new_value == old_value) return false;
+
+	old_value = new_value;
+	return true;
+}
+
 metadb_index_manager_v2::ptr PlaybackStatistics::api()
 {
 	static metadb_index_manager_v2* cached = metadb_index_manager_v2::get().detach();

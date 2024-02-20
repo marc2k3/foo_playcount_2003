@@ -30,6 +30,7 @@ pfc::string8 ImportExport::from_file(metadb_handle_list_cref handles, const pfc:
 
 	auto client = MetadbIndex::client();
 	auto ptr = PlaybackStatistics::api()->begin_transaction();
+	size_t matches{};
 
 	for (auto&& record : records)
 	{
@@ -42,12 +43,10 @@ pfc::string8 ImportExport::from_file(metadb_handle_list_cref handles, const pfc:
 		if (!hashes.contains(hash)) continue; // hash not found in set for a given handle list
 		hashes.erase(hash); // this hash exists but remove it so any future duplicate is skipped
 
-		auto f = PlaybackStatistics::get_fields(hash);
-		set_uint32(record["2003_added"], f.added);
-		set_uint32(record["2003_loved"], f.loved, 1);
-		set_uint32(record["2003_rating"], f.rating, 10);
+		matches++;
 
-		if (f.added == 0) f.added = now;
+		auto f = PlaybackStatistics::get_fields(hash);
+		bool changed{};
 
 		auto& timestamps = record["2003_timestamps"];
 		if (timestamps.is_array())
@@ -82,33 +81,48 @@ pfc::string8 ImportExport::from_file(metadb_handle_list_cref handles, const pfc:
 				f.first_played = v[0];
 				f.last_played = v[v.size() - 1];
 				f.playcount = static_cast<uint32_t>(v.size());
+
+				changed = true;
 			}
 		}
 		else if (Component::simple_mode)
 		{
-			uint32_t first_played{}, last_played{}, playcount{};
-			set_uint32(record["2003_first_played"], first_played);
-			set_uint32(record["2003_last_played"], last_played);
-			set_uint32(record["2003_playcount"], playcount);
+			const auto first_played = get_uint32(record["2003_first_played"]);
+			const auto last_played = get_uint32(record["2003_last_played"]);
+			const auto playcount = get_uint32(record["2003_playcount"]);
 
-			if (first_played && last_played && playcount)
-			{
-				f.first_played = first_played;
-				f.last_played = last_played;
-				f.playcount = playcount;
-			}
+			if (PlaybackStatistics::update_value(first_played, f.first_played)) changed = true;
+			if (PlaybackStatistics::update_value(last_played, f.last_played)) changed = true;
+			if (PlaybackStatistics::update_value(playcount, f.playcount)) changed = true;
 		}
 
-		if (f)
+		const auto loved = get_uint32(record["2003_loved"], 1);
+		const auto rating = get_uint32(record["2003_rating"], 10);
+		const auto added = get_uint32(record["2003_added"]);
+
+		if (PlaybackStatistics::update_value(loved, f.loved)) changed = true;
+		if (PlaybackStatistics::update_value(rating, f.rating)) changed = true;
+		if (PlaybackStatistics::update_value(added, f.added))
+		{
+			changed = true;
+			if (f.added == 0) f.added = now;
+		}
+
+		if (changed)
 		{
 			PlaybackStatistics::set_fields(ptr, hash, f);
 			to_refresh += hash;
 		}
 	}
+	
+	if (matches == 0)
+	{
+		return "The selected JSON file did not contain any matches.";
+	}
 
 	if (to_refresh.get_count() == 0)
 	{
-		return "The selected JSON file did not contain any matches.";
+		return pfc::format("The selected JSON file contained ", matches, " matches but no values were modified.");
 	}
 	
 	ptr->commit();
@@ -143,6 +157,19 @@ std::string ImportExport::read_file(const std::filesystem::path& path)
 	return content;
 }
 
+uint32_t ImportExport::get_uint32(JSON& json, uint32_t upper_limit)
+{
+	if (json.is_number_unsigned())
+	{
+		const auto value64 = json.get<uint64_t>();
+		if (value64 <= upper_limit)
+		{
+			return static_cast<uint32_t>(value64);
+		}
+	}
+	return UINT_MAX;
+}
+
 void ImportExport::from_file(metadb_handle_list_cref handles)
 {
 	pfc::string8 path;
@@ -155,18 +182,6 @@ void ImportExport::from_file(metadb_handle_list_cref handles)
 void ImportExport::popup(const pfc::string8& msg)
 {
 	popup_message::g_show(msg, Component::name);
-}
-
-void ImportExport::set_uint32(JSON& json, uint32_t& value, uint32_t upper_limit)
-{
-	if (json.is_number_unsigned())
-	{
-		const auto value64 = json.get<uint64_t>();
-		if (value64 <= upper_limit)
-		{
-			value = static_cast<uint32_t>(value64);
-		}
-	}
 }
 
 void ImportExport::to_file(metadb_handle_list_cref handles)

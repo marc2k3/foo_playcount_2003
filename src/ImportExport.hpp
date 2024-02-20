@@ -10,8 +10,8 @@ public:
 private:
 	static std::filesystem::path get_fs_path(const pfc::string8& path);
 	static std::string read_file(const std::filesystem::path& path);
+	static uint32_t get_uint32(JSON& json, uint32_t upper_limit = UINT_MAX);
 	static void popup(const pfc::string8& msg);
-	static void set_uint32(JSON& json, uint32_t& value, uint32_t upper_limit = UINT_MAX);
 
 	static constexpr const char* UTF_8_BOM = "\xEF\xBB\xBF";
 };
