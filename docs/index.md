@@ -73,6 +73,44 @@ These fields are available globally in `foobar2000` in any playlist columns/sear
 %2003_last_played_ago%
 ```
 
+```markdown title="Calculated difference since now, formatted in years and months. Weeks and days are only shown if less than one year"
+%2003_added_ago2%
+%2003_first_played_ago2%
+%2003_last_played_ago2%
+```
+
+!!! example
+	```
+	Added: %2003_added%
+	$crlf()
+	Added ago: %2003_added_ago%
+	$crlf()
+	Added ago2: %2003_added_ago2%
+	$crlf()
+	$crlf()
+	First: %2003_first_played%
+	$crlf()
+	First ago: %2003_first_played_ago%
+	$crlf()
+	First ago2: %2003_first_played_ago2% 
+	$crlf()
+	$crlf()
+	Last: %2003_last_played%
+	$crlf()
+	Last ago: %2003_last_played_ago%
+	$crlf()
+	Last ago2: %2003_last_played_ago2%
+	$crlf()
+	$crlf()
+	Plays: %2003_playcount%
+	$crlf()
+	Loved: %2003_loved%
+	$crlf()
+	Rating: %2003_rating%
+	```
+
+	![text display](images/playcount-2003-text-display.png)
+
 Ratings and loved values are set via the context menu for any playlist/library selection. The last thing
 in common is the ability to change the `Added` date via the context menu. Selecting this option will open an input
 box where you can update it using any valid date/time string in `YYYY-MM-DD HH:MM:SS` format.
@@ -159,6 +197,16 @@ The file path must be relative to the user profile folder and it must be `UTF8`.
 of `0.1` `Final`, with or without `BOM` is fine.
 
 ## Changes
+### 0.1.4
+- Add the following fields:
+```
+%2003_added_ago2%
+%2003_first_played_ago2%
+%2003_last_played_ago2%
+```
+
+See [here](#common-features)
+
 ### 0.1.3
 - Editing values via the context menu now reports how many items were updated in the console.
 - The file importer now accurately reports how many items were updated by only counting when values were modified.
