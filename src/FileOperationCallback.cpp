@@ -41,8 +41,8 @@ namespace
 				const auto old_path = display_path(from[i]);
 				const auto new_path = display_path(to[i]);
 
-				const auto old_hash = client->path_subsong_hash(old_path);
-				const auto new_hash = client->path_subsong_hash(new_path);
+				const auto old_hash = client->hash_path(old_path);
+				const auto new_hash = client->hash_path(new_path);
 
 				const auto f = PlaybackStatistics::get_fields(old_hash);
 				PlaybackStatistics::set_fields(ptr, new_hash, f);

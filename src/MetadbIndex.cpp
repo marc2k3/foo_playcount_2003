@@ -30,9 +30,14 @@ void MetadbIndex::init()
 }
 #pragma endregion
 
-metadb_index_hash MetadbIndex::path_subsong_hash(const pfc::string8& path)
+metadb_index_hash MetadbIndex::hash_path(const pfc::string8& path)
 {
 	const auto str = pfc::format(path, "|0");
+	return hash_string(str);
+}
+
+metadb_index_hash MetadbIndex::hash_string(const pfc::string8& str)
+{
 	return m_hasher->process_single_string(str).xorHalve();
 }
 
@@ -40,5 +45,5 @@ metadb_index_hash MetadbIndex::transform(const file_info& info, const playable_l
 {
 	pfc::string8 str;
 	m_obj->run_simple(location, &info, str);
-	return m_hasher->process_single_string(str).xorHalve();
+	return hash_string(str);
 }

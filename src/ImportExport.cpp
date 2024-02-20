@@ -28,21 +28,18 @@ pfc::string8 ImportExport::from_file(metadb_handle_list_cref handles, const pfc:
 	const auto now = PlaybackStatistics::now();
 	auto hashes = PlaybackStatistics::get_hashes(handles);
 
-	auto hasher = hasher_md5::get();
+	auto client = MetadbIndex::client();
 	auto ptr = PlaybackStatistics::api()->begin_transaction();
 
 	for (auto&& record : records)
 	{
-		metadb_index_hash hash{};
-
 		auto& jid = record["id"];
-		if (jid.is_string())
-		{
-			const pfc::string8 str = jid.get<std::string>().c_str();
-			hash = hasher->process_single_string(str).xorHalve();
-		}
+		if (!jid.is_string()) continue; // not a good sign but we'll persist
 
-		if (hash == 0 || !hashes.contains(hash)) continue; // hash not found in set for a given handle list
+		const pfc::string8 id = jid.get<std::string>().c_str();
+		const auto hash = client->hash_string(id);
+
+		if (!hashes.contains(hash)) continue; // hash not found in set for a given handle list
 		hashes.erase(hash); // this hash exists but remove it so any future duplicate is skipped
 
 		auto f = PlaybackStatistics::get_fields(hash);
