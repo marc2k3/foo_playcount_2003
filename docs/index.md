@@ -39,7 +39,7 @@ mean every track will have unique data.
 	%album artist%|%album%|%date%|%discnumber%|%tracknumber%|%title%
 	```
 
-### Common features
+## Common features
 Both `Simple` and `Advanced` mode have these same common features:
 
 - database records are remembered for 4 weeks when not monitored as part of the `Media Library` or any loaded playlist. This behaviour is the same as `foo_playcount`.
@@ -87,12 +87,6 @@ box where you can update it using any valid date/time string in `YYYY-MM-DD HH:M
 	starts or when new library items are added. If you clear data via the context menu, the `Added` field
 	will remain empty until the next restart or the next play or import.
 
-### Data import
-You can import/export data either via the main menu > `Library>Playcount 2003` or use the context menu
-on any playlist/library selection. Note that data from `Simple` mode is not compatible with `Advanced`
-mode. When importing, files must be `UTF8`. With or without `BOM` is fine as of `0.1` `Final`. Exported
-files are always without `BOM`.
-
 ## Simple mode
 !!! note 
 	The dedicated `foo_playcount` import option on the main `Library` menu has been removed in `0.1` final.
@@ -118,10 +112,13 @@ originated in `foo_enhanced_playcount`. `JavaScript` component users can use `JS
 The playcount/first played/last played values are extrapolated from the contents of this array so editing
 via the context menu is not supported.
 
-`%2003_playcount_this_year%` / `%2003_playcount_last_year%` aggregate plays for the given years and provide
-easy title formatting without any complicated `JavaScript` voodoo.
+`%2003_playcount_this_year%` / `%2003_playcount_last_year%` aggregate plays for the given years.
 
-### Javscript voodoo
+### Working with JScript Panel 3
+!!! note
+	With minor adjustments, this could work with any scripting component. They all provide
+	the same functionality.
+
 Since first played/last played/playcounts are not editable in `Advanced` mode, you can generate your own
 `JSON` files to import. Using the exact same title format pattern from the `Advanced` preferences, you
 can generate an `id` for each entry like this:
@@ -145,7 +142,13 @@ var str = JSON.stringify(arr);
 // save to file
 ```
 
-### Command line support
+## Data import / export
+You can import/export data either via the main menu > `Library>Playcount 2003` or use the context menu
+on any playlist/library selection. Note that data from `Simple` mode is not compatible with `Advanced`
+mode. When importing, files must be `UTF8`. With or without `BOM` is fine as of `0.1` `Final`. Exported
+files are always without `BOM`.
+
+## Command line support
 Finally, you can import `JSON` files via the command line like this:
 
 ```
