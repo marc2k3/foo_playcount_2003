@@ -190,11 +190,10 @@ files are always without `BOM`.
 Finally, you can import `JSON` files via the command line like this:
 
 ```
-.\foobar2000.exe /playcount_2003_import:filename.json`.
+.\foobar2000.exe /playcount_2003_import:filename.json
 ```
 
-The file path must be relative to the user profile folder and it must be `UTF8`. As
-of `0.1` `Final`, with or without `BOM` is fine.
+The file path must be relative to the user profile folder.
 
 ## Changes
 ### 0.1.4
