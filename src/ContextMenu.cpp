@@ -90,6 +90,18 @@ namespace
 			scope.initialize(wnd);
 
 			CDialogInputBox dlg;
+			auto client = MetadbIndex::client();
+
+			metadb_index_hash hash{};
+			if (handles.get_count() == 1 && client->hashHandle(handles[0], hash))
+			{
+				auto f = PlaybackStatistics::get_fields(hash);
+				if (f.added > 0) dlg.m_added = PlaybackStatistics::timestamp_to_string(f.added);
+				if (f.first_played > 0) dlg.m_first_played = PlaybackStatistics::timestamp_to_string(f.first_played);
+				if (f.last_played > 0) dlg.m_last_played = PlaybackStatistics::timestamp_to_string(f.last_played);
+				if (f.playcount > 0) dlg.m_playcount = pfc::format_uint(f.playcount);
+			}
+
 			if (dlg.DoModal(wnd) != IDOK) return;
 
 			titleformat_object_ptr obj;
@@ -97,7 +109,6 @@ namespace
 
 			PlaybackStatistics::HashList to_refresh;
 			PlaybackStatistics::HashSet hash_set;
-			auto client = MetadbIndex::client();
 			auto ptr = PlaybackStatistics::api()->begin_transaction();
 
 			for (auto&& handle : handles)

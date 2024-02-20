@@ -31,7 +31,7 @@ bool CDialogInputBox::CheckString(const pfc::string8& str)
 
 BOOL CDialogInputBox::OnInitDialog(CWindow, LPARAM)
 {
-	SetWindowTextW(pfc::wideFromUTF8(Component::name));
+	pfc::setWindowText(m_hWnd, Component::name);
 
 	m_button_clear = GetDlgItem(IDC_BTN_CLEAR);
 	m_button_presets = GetDlgItem(IDC_BTN_PRESETS);
@@ -47,6 +47,12 @@ BOOL CDialogInputBox::OnInitDialog(CWindow, LPARAM)
 	m_history_first_played.on_init(m_window_first_played, "");
 	m_history_last_played.on_init(m_window_last_played, "");
 	m_history_playcount.on_init(m_window_playcount, "");
+
+	// not via on_init, we don't want these values saved
+	pfc::setWindowText(m_window_added, m_added);
+	pfc::setWindowText(m_window_first_played, m_first_played);
+	pfc::setWindowText(m_window_last_played, m_last_played);
+	pfc::setWindowText(m_window_playcount, m_playcount);
 
 	if (!Component::simple_mode)
 	{
