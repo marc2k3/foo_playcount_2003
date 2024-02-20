@@ -70,7 +70,7 @@ These fields are available globally in `foobar2000` in any playlist columns/sear
 ```markdown title="Calculated difference since now, formatted in weeks, days, hours, minutes, seconds"
 %2003_added_ago%
 %2003_first_played_ago%
-%2003_last_played_ago%`
+%2003_last_played_ago%
 ```
 
 Ratings and loved values are set via the context menu for any playlist/library selection. The last thing
