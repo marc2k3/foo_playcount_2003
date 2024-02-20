@@ -156,6 +156,10 @@ The file path must be relative to the user profile folder and it must be `UTF8`.
 of `0.1` `Final`, with or without `BOM` is fine.
 
 ## Changes
+### 0.1.3
+- Editing values via the context menu now reports how many items were updated in the console.
+- The file importer now accurately reports how many items were updated by only counting when values were modified.
+
 ### 0.1.2
 - Minor file import tweaks.
 
