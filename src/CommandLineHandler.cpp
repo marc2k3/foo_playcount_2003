@@ -19,7 +19,7 @@ namespace
 				metadb_handle_list items;
 				library_manager::get()->get_all_items(items);
 				const auto msg = ImportExport::from_file(items, path);
-				FB2K_console_formatter() << pfc::format(Component::name, ": Command line import: ", msg);
+				FB2K_console_print(Component::name, ": Command line import: ", msg);
 				return RESULT_PROCESSED;
 			}
 
