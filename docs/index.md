@@ -182,9 +182,8 @@ var str = JSON.stringify(arr);
 
 ## Data import / export
 You can import/export data either via the main menu > `Library>Playcount 2003` or use the context menu
-on any playlist/library selection. Note that data from `Simple` mode is not compatible with `Advanced`
-mode. When importing, files must be `UTF8`. With or without `BOM` is fine as of `0.1` `Final`. Exported
-files are always without `BOM`.
+on any playlist/library selection. When importing, files must be `UTF8`. With or without `BOM` is fine
+as of `0.1` `Final`. Exported files are always without `BOM`.
 
 ## Command line support
 Finally, you can import `JSON` files via the command line like this:

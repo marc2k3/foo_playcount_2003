@@ -75,44 +75,7 @@ string8 ImportExport::from_file(metadb_handle_list_cref handles, const string8& 
 		auto f = PlaybackStatistics::get_fields(hash);
 		bool changed{};
 
-		auto& timestamps = record["2003_timestamps"];
-		if (timestamps.is_array())
-		{
-			std::set<uint32_t> s;
-			std::vector<uint32_t> v;
-
-			for (auto&& timestamp : timestamps)
-			{
-				if (timestamp.is_number_unsigned())
-				{
-					const auto ts64 = timestamp.get<uint64_t>();
-					if (ts64 == 0 || ts64 > UINT_MAX) continue;
-
-					const auto ts = static_cast<uint32_t>(ts64);
-					if (s.emplace(ts).second)
-					{
-						v.emplace_back(ts);
-					}
-				}
-			}
-
-			if (v.size())
-			{
-				std::ranges::sort(v);
-
-				if (!Component::simple_mode)
-				{
-					f.timestamps = JSON(v).dump().c_str();
-				}
-
-				f.first_played = v[0];
-				f.last_played = v[v.size() - 1];
-				f.playcount = static_cast<uint32_t>(v.size());
-
-				changed = true;
-			}
-		}
-		else if (Component::simple_mode)
+		if (Component::simple_mode)
 		{
 			const auto first_played = get_uint32(record["2003_first_played"]);
 			const auto last_played = get_uint32(record["2003_last_played"]);
@@ -121,6 +84,42 @@ string8 ImportExport::from_file(metadb_handle_list_cref handles, const string8& 
 			if (PlaybackStatistics::update_value(first_played, f.first_played)) changed = true;
 			if (PlaybackStatistics::update_value(last_played, f.last_played)) changed = true;
 			if (PlaybackStatistics::update_value(playcount, f.playcount)) changed = true;
+		}
+		else
+		{
+			auto& timestamps = record["2003_timestamps"];
+			if (timestamps.is_array())
+			{
+				std::set<uint32_t> s;
+				std::vector<uint32_t> v;
+
+				for (auto&& timestamp : timestamps)
+				{
+					if (timestamp.is_number_unsigned())
+					{
+						const auto ts64 = timestamp.get<uint64_t>();
+						if (ts64 == 0 || ts64 > UINT_MAX) continue;
+
+						const auto ts = static_cast<uint32_t>(ts64);
+						if (s.emplace(ts).second)
+						{
+							v.emplace_back(ts);
+						}
+					}
+				}
+
+				if (v.size())
+				{
+					std::ranges::sort(v);
+
+					f.timestamps = JSON(v).dump().c_str();
+					f.first_played = v[0];
+					f.last_played = v[v.size() - 1];
+					f.playcount = static_cast<uint32_t>(v.size());
+
+					changed = true;
+				}
+			}
 		}
 
 		const auto loved = get_uint32(record["2003_loved"], 1);
