@@ -21,6 +21,8 @@ using JSON = nlohmann::json;
 #include <pfc/string-conv-lite.h>
 #include <SDK/coreDarkMode.h>
 
+using pfc::string8;
+
 #include "foo_playcount_2003.hpp"
 #include "GUIDS.hpp"
 #include "Resource.hpp"

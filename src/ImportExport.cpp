@@ -1,7 +1,34 @@
 #include "stdafx.hpp"
 #include "ImportExport.hpp"
 
-pfc::string8 ImportExport::from_file(metadb_handle_list_cref handles, const pfc::string8& path)
+std::filesystem::path ImportExport::get_fs_path(const string8& path)
+{
+	auto wpath = pfc::wideFromUTF8(path);
+	return std::filesystem::path(wpath.c_str());
+}
+
+std::string ImportExport::read_file(const std::filesystem::path& path)
+{
+	std::string content;
+	auto stream = std::ifstream(path);
+	if (stream.is_open())
+	{
+		std::string line;
+		while (std::getline(stream, line))
+		{
+			content += line;
+		}
+	}
+
+	if (content.starts_with(UTF_8_BOM))
+	{
+		return content.substr(3);
+	}
+
+	return content;
+}
+
+string8 ImportExport::from_file(metadb_handle_list_cref handles, const string8& path)
 {
 	const auto fs_path = get_fs_path(path);
 
@@ -37,7 +64,7 @@ pfc::string8 ImportExport::from_file(metadb_handle_list_cref handles, const pfc:
 		auto& jid = record["id"];
 		if (!jid.is_string()) continue; // not a good sign but we'll persist
 
-		const pfc::string8 id = jid.get<std::string>().c_str();
+		const string8 id = jid.get<std::string>().c_str();
 		const auto hash = client->hash_string(id);
 
 		if (!hashes.contains(hash)) continue; // hash not found in set for a given handle list
@@ -114,7 +141,7 @@ pfc::string8 ImportExport::from_file(metadb_handle_list_cref handles, const pfc:
 			to_refresh += hash;
 		}
 	}
-	
+
 	if (matches == 0)
 	{
 		return "The selected JSON file did not contain any matches.";
@@ -124,37 +151,10 @@ pfc::string8 ImportExport::from_file(metadb_handle_list_cref handles, const pfc:
 	{
 		return pfc::format("The selected JSON file contained ", matches, " matches but no values were modified.");
 	}
-	
+
 	ptr->commit();
 	PlaybackStatistics::refresh(to_refresh);
 	return pfc::format(to_refresh.get_count(), " records were imported.");
-}
-
-std::filesystem::path ImportExport::get_fs_path(const pfc::string8& path)
-{
-	auto wpath = pfc::wideFromUTF8(path);
-	return std::filesystem::path(wpath.c_str());
-}
-
-std::string ImportExport::read_file(const std::filesystem::path& path)
-{
-	std::string content;
-	auto stream = std::ifstream(path);
-	if (stream.is_open())
-	{
-		std::string line;
-		while (std::getline(stream, line))
-		{
-			content += line;
-		}
-	}
-
-	if (content.starts_with(UTF_8_BOM))
-	{
-		return content.substr(3);
-	}
-
-	return content;
 }
 
 uint32_t ImportExport::get_uint32(JSON& json, uint32_t upper_limit)
@@ -172,21 +172,21 @@ uint32_t ImportExport::get_uint32(JSON& json, uint32_t upper_limit)
 
 void ImportExport::from_file(metadb_handle_list_cref handles)
 {
-	pfc::string8 path;
+	string8 path;
 	if (!uGetOpenFileName(core_api::get_main_window(), "JSON file|*.json|All files|*.*", 0, "txt", "Import from", nullptr, path, FALSE)) return;
 
 	const auto msg = from_file(handles, path);
 	popup(msg);
 }
 
-void ImportExport::popup(const pfc::string8& msg)
+void ImportExport::popup(const string8& msg)
 {
 	popup_message::g_show(msg, Component::name);
 }
 
 void ImportExport::to_file(metadb_handle_list_cref handles)
 {
-	pfc::string8 path, tf;
+	string8 path, tf;
 	if (!uGetOpenFileName(core_api::get_main_window(), "JSON file|*.json|All files|*.*", 0, "txt", "Save as", nullptr, path, TRUE)) return;
 
 	titleformat_object_ptr obj;

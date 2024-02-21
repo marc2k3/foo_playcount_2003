@@ -68,7 +68,7 @@ metadb_index_manager_v2::ptr PlaybackStatistics::api()
 	return cached;
 }
 
-pfc::string8 PlaybackStatistics::timestamp_to_string(uint64_t ts)
+string8 PlaybackStatistics::timestamp_to_string(uint64_t ts)
 {
 	const uint64_t windows_time = pfc::fileTimeUtoW(ts);
 	return pfc::format_filetimestamp(windows_time);
@@ -144,7 +144,7 @@ uint32_t PlaybackStatistics::playcount_year(const Fields& f, bool last_year)
 	return count;
 }
 
-uint32_t PlaybackStatistics::string_to_timestamp(const pfc::string8& str)
+uint32_t PlaybackStatistics::string_to_timestamp(const string8& str)
 {
 	if (str.empty()) return UINT_MAX;
 	if (str == "0") return 0; // special handling for edit dialog

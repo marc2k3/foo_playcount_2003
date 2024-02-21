@@ -12,7 +12,7 @@ bool CDialogInputBox::CheckComponent(const pfc::string& name)
 {
 	for (auto ptr : componentversion::enumerate())
 	{
-		pfc::string8 str;
+		string8 str;
 		ptr->get_file_name(str);
 		if (stricmp_utf8(str, name) == 0)
 		{
@@ -23,7 +23,7 @@ bool CDialogInputBox::CheckComponent(const pfc::string& name)
 	return false;
 }
 
-bool CDialogInputBox::CheckString(const pfc::string8& str)
+bool CDialogInputBox::CheckString(const string8& str)
 {
 	return str.contains("%") || str.contains("$");
 }

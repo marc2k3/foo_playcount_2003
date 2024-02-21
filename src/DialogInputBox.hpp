@@ -19,11 +19,11 @@ public:
 
 	enum { IDD = IDD_DIALOG_INPUTBOX };
 
-	pfc::string8 m_added, m_first_played, m_last_played, m_playcount;
+	string8 m_added, m_first_played, m_last_played, m_playcount;
 
 private:
 	static bool CheckComponent(const pfc::string& name);
-	static bool CheckString(const pfc::string8& str);
+	static bool CheckString(const string8& str);
 
 	BOOL OnInitDialog(CWindow, LPARAM);
 	void OnClear(uint32_t, int, CWindow);

@@ -118,7 +118,7 @@ namespace
 			if (ts == 0 || ts > now) return false;
 
 			bool include_weeks_days = true;
-			pfc::string8 str;
+			string8 str;
 			uint32_t diff = now - ts;
 
 			if (diff < day_in_seconds * 2)

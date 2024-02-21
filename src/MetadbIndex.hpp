@@ -8,8 +8,8 @@ public:
 	static MetadbIndex* client();
 	static void init();
 
-	metadb_index_hash hash_path(const pfc::string8& path);
-	metadb_index_hash hash_string(const pfc::string8& str);
+	metadb_index_hash hash_path(const string8& path);
+	metadb_index_hash hash_string(const string8& str);
 	metadb_index_hash transform(const file_info& info, const playable_location& location) final;
 
 private:

@@ -8,8 +8,8 @@ namespace
 	public:
 		result on_token(const char* token) final
 		{
-			static const pfc::string8 prefix = "/playcount_2003_import:";
-			const pfc::string8 s = token;
+			static const string8 prefix = "/playcount_2003_import:";
+			const string8 s = token;
 
 			if (s.startsWith(prefix))
 			{
@@ -27,10 +27,10 @@ namespace
 		}
 
 	private:
-		pfc::string8 full_path(const pfc::string8& path)
+		string8 full_path(const string8& path)
 		{
 			static const auto profile_path = core_api::get_profile_path();
-			pfc::string8 full_path;
+			string8 full_path;
 			filesystem::g_get_display_path(pfc::io::path::combine(profile_path, path), full_path);
 			return full_path;
 		}

@@ -32,7 +32,7 @@ namespace Component
 
 		void init_stage()
 		{
-			pfc::string8 pin_to_temp;
+			string8 pin_to_temp;
 			advconfig_pin_to.get(pin_to_temp);
 
 			if (pin_to_temp != pin_to.get() || advconfig_simple.get() != simple_mode)

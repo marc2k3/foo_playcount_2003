@@ -18,9 +18,9 @@ namespace
 		}
 
 	private:
-		pfc::string8 display_path(const pfc::string8& path)
+		string8 display_path(const string8& path)
 		{
-			pfc::string8 ret;
+			string8 ret;
 			filesystem::g_get_display_path(path, ret);
 			return ret;
 		}
