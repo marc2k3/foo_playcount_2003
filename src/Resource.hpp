@@ -7,7 +7,7 @@
 #define IDC_STATIC -1
 #endif
 
-#define IDD_DIALOG_INPUTBOX 100
+#define IDD_DIALOG_EDIT 100
 #define IDC_BTN_PRESETS 102
 #define IDC_BTN_CLEAR 103
 

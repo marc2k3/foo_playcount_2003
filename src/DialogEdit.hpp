@@ -1,11 +1,11 @@
 #pragma once
 
-class CDialogInputBox : public CDialogImpl<CDialogInputBox>
+class CDialogEdit : public CDialogImpl<CDialogEdit>
 {
 public:
-	CDialogInputBox();
+	CDialogEdit();
 
-	BEGIN_MSG_MAP_EX(CDialogInputBox)
+	BEGIN_MSG_MAP_EX(CDialogEdit)
 		MSG_WM_INITDIALOG(OnInitDialog)
 		COMMAND_ID_HANDLER_EX(IDC_BTN_CLEAR, OnClear)
 		COMMAND_ID_HANDLER_EX(IDC_BTN_PRESETS, OnPresets)
@@ -17,7 +17,7 @@ public:
 		DROPDOWN_HISTORY_HANDLER(IDC_COMBO_PLAYCOUNT, m_history_playcount)
 	END_MSG_MAP()
 
-	enum { IDD = IDD_DIALOG_INPUTBOX };
+	enum { IDD = IDD_DIALOG_EDIT };
 
 	string8 m_added, m_first_played, m_last_played, m_playcount;
 

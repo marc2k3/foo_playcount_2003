@@ -1,14 +1,14 @@
 #include "stdafx.hpp"
-#include "DialogInputBox.hpp"
+#include "DialogEdit.hpp"
 
-CDialogInputBox::CDialogInputBox()
+CDialogEdit::CDialogEdit()
 	: m_history_added(guids::history_added)
 	, m_history_first_played(guids::history_first_played)
 	, m_history_last_played(guids::history_last_played)
 	, m_history_playcount(guids::history_playcount) {}
 
 #pragma region static
-bool CDialogInputBox::CheckComponent(const pfc::string& name)
+bool CDialogEdit::CheckComponent(const pfc::string& name)
 {
 	for (auto ptr : componentversion::enumerate())
 	{
@@ -23,13 +23,13 @@ bool CDialogInputBox::CheckComponent(const pfc::string& name)
 	return false;
 }
 
-bool CDialogInputBox::CheckString(const string8& str)
+bool CDialogEdit::CheckString(const string8& str)
 {
 	return str.contains("%") || str.contains("$");
 }
 #pragma endregion
 
-BOOL CDialogInputBox::OnInitDialog(CWindow, LPARAM)
+BOOL CDialogEdit::OnInitDialog(CWindow, LPARAM)
 {
 	pfc::setWindowText(m_hWnd, Component::name);
 
@@ -68,7 +68,7 @@ BOOL CDialogInputBox::OnInitDialog(CWindow, LPARAM)
 	return TRUE;
 }
 
-void CDialogInputBox::OnClear(uint32_t, int, CWindow)
+void CDialogEdit::OnClear(uint32_t, int, CWindow)
 {
 	m_window_added.SetWindowTextW(L"");
 	m_window_first_played.SetWindowTextW(L"");
@@ -77,7 +77,7 @@ void CDialogInputBox::OnClear(uint32_t, int, CWindow)
 	m_button_ok.EnableWindow(FALSE);
 }
 
-void CDialogInputBox::OnCloseCmd(uint32_t, int nID, CWindow)
+void CDialogEdit::OnCloseCmd(uint32_t, int nID, CWindow)
 {
 	if (nID == IDOK)
 	{
@@ -95,7 +95,7 @@ void CDialogInputBox::OnCloseCmd(uint32_t, int nID, CWindow)
 	EndDialog(nID);
 }
 
-void CDialogInputBox::OnPresets(uint32_t, int, CWindow)
+void CDialogEdit::OnPresets(uint32_t, int, CWindow)
 {
 	const bool foo_playcount = CheckComponent("foo_playcount");
 	const bool foo_lastfm_playcount_sync = CheckComponent("foo_lastfm_playcount_sync");
@@ -128,7 +128,7 @@ void CDialogInputBox::OnPresets(uint32_t, int, CWindow)
 	}
 }
 
-void CDialogInputBox::OnUpdate(uint32_t, int, CWindow)
+void CDialogEdit::OnUpdate(uint32_t, int, CWindow)
 {
 	const auto enable = [this]() -> BOOL
 		{

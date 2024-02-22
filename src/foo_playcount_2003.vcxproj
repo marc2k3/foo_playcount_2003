@@ -189,7 +189,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DialogInputBox.hpp" />
+    <ClInclude Include="DialogEdit.hpp" />
     <ClInclude Include="foo_playcount_2003.hpp" />
     <ClInclude Include="GUIDS.hpp" />
     <ClInclude Include="ImportExport.hpp" />
@@ -202,7 +202,7 @@
     <ClCompile Include="CommandLineHandler.cpp" />
     <ClCompile Include="ContextMenu.cpp" />
     <ClCompile Include="ContextMenuRating.cpp" />
-    <ClCompile Include="DialogInputBox.cpp" />
+    <ClCompile Include="DialogEdit.cpp" />
     <ClCompile Include="FileOperationCallback.cpp" />
     <ClCompile Include="foo_playcount_2003.cpp" />
     <ClCompile Include="ImportExport.cpp" />

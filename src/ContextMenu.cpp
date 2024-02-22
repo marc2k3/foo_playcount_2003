@@ -1,5 +1,5 @@
 #include "stdafx.hpp"
-#include "DialogInputBox.hpp"
+#include "DialogEdit.hpp"
 #include "ImportExport.hpp"
 
 namespace
@@ -163,7 +163,7 @@ namespace
 			auto wnd = core_api::get_main_window();
 			scope.initialize(wnd);
 
-			CDialogInputBox dlg;
+			CDialogEdit dlg;
 			metadb_index_hash hash{};
 
 			if (handles.get_count() == 1 && MetadbIndex::client()->hashHandle(handles[0], hash))
