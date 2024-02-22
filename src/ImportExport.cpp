@@ -1,6 +1,29 @@
 #include "stdafx.hpp"
 #include "ImportExport.hpp"
 
+JSON ImportExport::create_json_array(const std::vector<uint32_t>& v)
+{
+	// auto j = JSON(v) would usually be fine but this considers timestamps
+	// too close together as duplicates
+
+	static constexpr uint32_t good_diff = 30U;
+
+	auto j = JSON::array();
+	j.emplace_back(v.at(0));
+	uint32_t last_good = 1U;
+
+	for (const uint32_t i : v | std::views::drop(1))
+	{
+		if (i >= last_good + good_diff)
+		{
+			last_good = i;
+			j.emplace_back(i);
+		}
+	}
+
+	return j;
+}
+
 std::filesystem::path ImportExport::get_fs_path(const string8& path)
 {
 	auto wpath = pfc::wideFromUTF8(path);
@@ -90,7 +113,6 @@ string8 ImportExport::from_file(metadb_handle_list_cref handles, const string8& 
 			auto& timestamps = record["2003_timestamps"];
 			if (timestamps.is_array())
 			{
-				std::set<uint32_t> s;
 				std::vector<uint32_t> v;
 
 				for (auto&& timestamp : timestamps)
@@ -101,21 +123,19 @@ string8 ImportExport::from_file(metadb_handle_list_cref handles, const string8& 
 						if (ts64 == 0 || ts64 > UINT_MAX) continue;
 
 						const auto ts = static_cast<uint32_t>(ts64);
-						if (s.emplace(ts).second)
-						{
-							v.emplace_back(ts);
-						}
+						v.emplace_back(ts);
 					}
 				}
 
 				if (v.size())
 				{
 					std::ranges::sort(v);
+					const auto j = create_json_array(v);
 
-					f.timestamps = JSON(v).dump().c_str();
-					f.first_played = v[0];
-					f.last_played = v[v.size() - 1];
-					f.playcount = static_cast<uint32_t>(v.size());
+					f.timestamps = j.dump().c_str();
+					f.first_played = j.at(0).get<uint32_t>();
+					f.last_played = j.at(j.size() - 1).get<uint32_t>();
+					f.playcount = static_cast<uint32_t>(j.size());
 
 					changed = true;
 				}
