@@ -31,8 +31,6 @@ bool CDialogEdit::CheckString(const string8& str)
 
 BOOL CDialogEdit::OnInitDialog(CWindow, LPARAM)
 {
-	pfc::setWindowText(m_hWnd, Component::name);
-
 	m_button_clear = GetDlgItem(IDC_BTN_CLEAR);
 	m_button_presets = GetDlgItem(IDC_BTN_PRESETS);
 	m_button_ok = GetDlgItem(IDOK);
