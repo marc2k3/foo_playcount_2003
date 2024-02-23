@@ -111,19 +111,21 @@ These fields are available globally in `foobar2000` in any playlist columns/sear
 
 	![text display](images/playcount-2003-text-display.png)
 
-Ratings and loved values are set via the context menu for any playlist/library selection. The last thing
-in common is the ability to change the `Added` date via the context menu. Selecting this option will open an input
-box where you can update it using any valid date/time string in `YYYY-MM-DD HH:MM:SS` format.
+Ratings and loved values are set via the context menu for any playlist/library selection.
+
+### Added
+`Added` times are generated automatically for `Media Library` items only. This happens when `foobar2000`
+starts or when new library items are added. If you clear data via the context menu, the `Added` field
+will remain empty until the next restart or the next play or import.
+
+`Added` dates can be edited via the context menu. Selecting this option will open an edit
+dialog where you can update it using any valid date/time string in `YYYY-MM-DD HH:MM:SS` format.
+The component will not check if selection items belong to the library when writing.
 
 !!! note
-	Strictly speaking, the earliest supported value is `1970-01-01 00:00:01`. As Unix timestamps are used
+	Strictly speaking, the earliest supported date/time is `1970-01-01 00:00:01`. As Unix timestamps are used
 	internally, zero is reserved for indicating not set. The latest value is some time in the year 2106
 	because 32bit unsigned integers are used for storage.
-
-!!! note
-	`Added` times are generated automatically for `Media Library` items only. This happens when `foobar2000`
-	starts or when new library items are added. If you clear data via the context menu, the `Added` field
-	will remain empty until the next restart or the next play or import.
 
 ## Simple mode
 !!! note 
@@ -204,6 +206,10 @@ The file path must be relative to the user profile folder.
 ```
 
 See [here](#common-features)
+
+### 0.1.4
+- Fix bug where `OK` button in `Edit` dialog remained disabled after choosing a history item from the dropdown.
+- Update the file importer in `Advanced` mode. Previously, any timsestamps that were identical for a given track were discarded. Now the check expands and assumes any timestamps within 10 seconds of each other are duplicates. Just to be clear, this is per track.
 
 ### 0.1.3
 - Editing values via the context menu now reports how many items were updated in the console.
