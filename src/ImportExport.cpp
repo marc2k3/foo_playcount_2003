@@ -6,7 +6,7 @@ JSON ImportExport::create_json_array(const std::vector<uint32_t>& v)
 	// auto j = JSON(v) would usually be fine but this considers timestamps
 	// too close together as duplicates
 
-	static constexpr uint32_t good_diff = 30U;
+	static constexpr uint32_t good_diff = 10U;
 
 	auto j = JSON::array();
 	j.emplace_back(v.at(0));
