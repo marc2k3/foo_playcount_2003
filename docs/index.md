@@ -197,6 +197,10 @@ Finally, you can import `JSON` files via the command line like this:
 The file path must be relative to the user profile folder.
 
 ## Changes
+### 0.1.5
+- Fix bug where `OK` button in `Edit` dialog remained disabled after choosing a history item from the dropdown.
+- Update the file importer in `Advanced` mode. Previously, any timsestamps that were identical for a given track were discarded. Now the check expands and assumes any timestamps within 10 seconds of each other are duplicates. Just to be clear, this is per track.
+
 ### 0.1.4
 - Add the following fields:
 ```
@@ -206,10 +210,6 @@ The file path must be relative to the user profile folder.
 ```
 
 See [here](#common-features)
-
-### 0.1.4
-- Fix bug where `OK` button in `Edit` dialog remained disabled after choosing a history item from the dropdown.
-- Update the file importer in `Advanced` mode. Previously, any timsestamps that were identical for a given track were discarded. Now the check expands and assumes any timestamps within 10 seconds of each other are duplicates. Just to be clear, this is per track.
 
 ### 0.1.3
 - Editing values via the context menu now reports how many items were updated in the console.
