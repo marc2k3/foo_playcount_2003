@@ -178,6 +178,7 @@ namespace
 			if (dlg.DoModal(wnd) == IDOK)
 			{
 				const auto tf = pfc::format(dlg.m_first_played, "|", dlg.m_last_played, "|", dlg.m_added, "|", dlg.m_playcount);
+				if (tf == "|||") return;
 				import_from_dialog_tf(handles, tf);
 			}
 		}

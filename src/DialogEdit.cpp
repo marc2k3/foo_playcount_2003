@@ -33,8 +33,6 @@ BOOL CDialogEdit::OnInitDialog(CWindow, LPARAM)
 {
 	m_button_clear = GetDlgItem(IDC_BTN_CLEAR);
 	m_button_presets = GetDlgItem(IDC_BTN_PRESETS);
-	m_button_ok = GetDlgItem(IDOK);
-	m_button_ok.EnableWindow(FALSE);
 
 	m_window_added = GetDlgItem(IDC_COMBO_ADDED);
 	m_window_first_played = GetDlgItem(IDC_COMBO_FIRST_PLAYED);
@@ -57,6 +55,7 @@ BOOL CDialogEdit::OnInitDialog(CWindow, LPARAM)
 		m_window_first_played.EnableWindow(FALSE);
 		m_window_last_played.EnableWindow(FALSE);
 		m_window_playcount.EnableWindow(FALSE);
+
 		m_button_presets.EnableWindow(FALSE);
 		m_button_clear.EnableWindow(FALSE);
 	}
@@ -72,7 +71,6 @@ void CDialogEdit::OnClear(uint32_t, int, CWindow)
 	m_window_first_played.SetWindowTextW(L"");
 	m_window_last_played.SetWindowTextW(L"");
 	m_window_playcount.SetWindowTextW(L"");
-	m_button_ok.EnableWindow(FALSE);
 }
 
 void CDialogEdit::OnCloseCmd(uint32_t, int nID, CWindow)
@@ -114,28 +112,12 @@ void CDialogEdit::OnPresets(uint32_t, int, CWindow)
 		m_window_first_played.SetWindowTextW(L"[%first_played%]");
 		m_window_last_played.SetWindowTextW(L"[%last_played%]");
 		m_window_playcount.SetWindowTextW(L"[%play_count%]");
-		m_button_ok.EnableWindow();
 		break;
 	case ID_MENU_FOO_LASTFM_PLAYCOUNT_SYNC:
 		m_window_added.SetWindowTextW(L"");
 		m_window_first_played.SetWindowTextW(L"[%lfm_first_played%]");
 		m_window_last_played.SetWindowTextW(L"[%lfm_last_played%]");
 		m_window_playcount.SetWindowTextW(L"[%lfm_playcount%]");
-		m_button_ok.EnableWindow();
 		break;
 	}
-}
-
-void CDialogEdit::OnUpdate(uint32_t, int, CWindow)
-{
-	const auto enable = [this]() -> BOOL
-		{
-			if (m_window_added.GetWindowTextLengthW() > 0) return TRUE;
-			if (m_window_first_played.GetWindowTextLengthW() > 0) return TRUE;
-			if (m_window_last_played.GetWindowTextLengthW() > 0) return TRUE;
-			if (m_window_playcount.GetWindowTextLengthW() > 0) return TRUE;
-			return FALSE;
-		}();
-
-	m_button_ok.EnableWindow(enable);
 }
