@@ -99,7 +99,7 @@ namespace
 			const string8 pc = list[3];
 			if (pfc::string_is_numeric(pc))
 			{
-				const auto playcount = pfc::atoui_ex(pc, str.get_length());
+				const auto playcount = pfc::atoui_ex(pc, pc.get_length());
 				if (playcount != f.playcount)
 				{
 					f.playcount = playcount;
