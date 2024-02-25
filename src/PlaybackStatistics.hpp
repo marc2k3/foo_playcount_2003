@@ -21,7 +21,6 @@ public:
 
 	static Fields get_fields(metadb_index_hash hash);
 	static HashSet get_hashes(metadb_handle_list_cref handles);
-	static JSON get_timestamps_array(const Fields& f);
 	static bool update_value(uint32_t new_value, uint32_t& old_value);
 	static metadb_index_manager_v2::ptr api();
 	static string8 timestamp_to_string(uint64_t ts);

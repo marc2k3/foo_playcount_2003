@@ -1,29 +1,6 @@
 #include "stdafx.hpp"
 #include "ImportExport.hpp"
 
-JSON ImportExport::create_json_array(const std::vector<uint32_t>& v)
-{
-	// auto j = JSON(v) would usually be fine but this considers timestamps
-	// too close together as duplicates
-
-	static constexpr uint32_t good_diff = 10U;
-
-	auto j = JSON::array();
-	j.emplace_back(v.at(0));
-	uint32_t last_good = 1U;
-
-	for (const uint32_t i : v | std::views::drop(1))
-	{
-		if (i >= last_good + good_diff)
-		{
-			last_good = i;
-			j.emplace_back(i);
-		}
-	}
-
-	return j;
-}
-
 std::filesystem::path ImportExport::get_fs_path(const string8& path)
 {
 	auto wpath = pfc::wideFromUTF8(path);
@@ -68,7 +45,7 @@ string8 ImportExport::from_file(metadb_handle_list_cref handles, const string8& 
 		return "The selected file was empty or there was an unexpected read error.";
 	}
 
-	auto records = JSON::parse(content, nullptr, false);
+	auto records = JSONHelper::parse(content);
 	if (!records.is_array())
 	{
 		return "Unexpected JSON parse error.";
@@ -130,7 +107,7 @@ string8 ImportExport::from_file(metadb_handle_list_cref handles, const string8& 
 				if (v.size())
 				{
 					std::ranges::sort(v);
-					const auto j = create_json_array(v);
+					const auto j = JSONHelper::create_timestamps_array(v);
 
 					f.timestamps = j.dump().c_str();
 					f.first_played = j.at(0).get<uint32_t>();
@@ -205,7 +182,7 @@ void ImportExport::popup(const string8& msg)
 
 void ImportExport::to_file(metadb_handle_list_cref handles)
 {
-	string8 path, tf;
+	string8 path;
 	if (!uGetOpenFileName(core_api::get_main_window(), "JSON file|*.json|All files|*.*", 0, "txt", "Save as", nullptr, path, TRUE)) return;
 
 	titleformat_object_ptr obj;
@@ -223,27 +200,10 @@ void ImportExport::to_file(metadb_handle_list_cref handles)
 			const auto f = PlaybackStatistics::get_fields(hash);
 			if (!f) continue;
 
-			JSON json;
-
-			handle->format_title(nullptr, tf, obj, nullptr);
-			json["id"] = tf.get_ptr();
-
-			if (f.added > 0) json["2003_added"] = f.added;
-			if (f.loved > 0) json["2003_loved"] = f.loved;
-			if (f.rating > 0) json["2003_rating"] = f.rating;
-
-			if (Component::simple_mode)
-			{
-				if (f.first_played > 0) json["2003_first_played"] = f.first_played;
-				if (f.last_played > 0) json["2003_last_played"] = f.last_played;
-				if (f.playcount > 0) json["2003_playcount"] = f.playcount;
-			}
-			else
-			{
-				json["2003_timestamps"] = PlaybackStatistics::get_timestamps_array(f);
-			}
-
-			data.emplace_back(json);
+			string8 id;
+			handle->format_title(nullptr, id, obj, nullptr);
+			auto entry = JSONHelper::create_export_entry(id, f);
+			data.emplace_back(entry);
 		}
 	}
 

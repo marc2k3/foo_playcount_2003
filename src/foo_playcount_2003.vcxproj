@@ -193,6 +193,7 @@
     <ClInclude Include="foo_playcount_2003.hpp" />
     <ClInclude Include="GUIDS.hpp" />
     <ClInclude Include="ImportExport.hpp" />
+    <ClInclude Include="JSONHelper.hpp" />
     <ClInclude Include="MetadbIndex.hpp" />
     <ClInclude Include="PlaybackStatistics.hpp" />
     <ClInclude Include="Resource.hpp" />
@@ -206,6 +207,7 @@
     <ClCompile Include="FileOperationCallback.cpp" />
     <ClCompile Include="foo_playcount_2003.cpp" />
     <ClCompile Include="ImportExport.cpp" />
+    <ClCompile Include="JSONHelper.cpp" />
     <ClCompile Include="LibraryCallback.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MetadbDisplayFieldProvider.cpp" />

@@ -29,3 +29,4 @@ using pfc::string8;
 
 #include "MetadbIndex.hpp"
 #include "PlaybackStatistics.hpp"
+#include "JSONHelper.hpp"

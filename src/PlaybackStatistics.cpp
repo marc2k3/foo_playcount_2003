@@ -47,13 +47,6 @@ PlaybackStatistics::HashSet PlaybackStatistics::get_hashes(metadb_handle_list_cr
 	return hashes;
 }
 
-JSON PlaybackStatistics::get_timestamps_array(const Fields& f)
-{
-	auto timestamps = JSON::parse(f.timestamps.get_ptr(), nullptr, false);
-	if (!timestamps.is_array()) timestamps = JSON::array(); // WTFBBQLOL
-	return timestamps;
-}
-
 bool PlaybackStatistics::update_value(uint32_t new_value, uint32_t& old_value)
 {
 	if (new_value == UINT_MAX || new_value == old_value) return false;
@@ -131,7 +124,7 @@ uint32_t PlaybackStatistics::playcount_year(const Fields& f, bool last_year)
 	auto target_year = get_year(now_ts);
 	if (last_year) target_year--;
 
-	const auto timestamps = get_timestamps_array(f) | std::views::reverse;
+	const auto timestamps = JSONHelper::get_timestamps_array(f) | std::views::reverse;
 	uint32_t count{};
 
 	for (auto&& timestamp : timestamps)
@@ -196,7 +189,7 @@ void PlaybackStatistics::on_item_played(const metadb_handle_ptr& handle)
 		}
 		else
 		{
-			auto timestamps = get_timestamps_array(f);
+			auto timestamps = JSONHelper::get_timestamps_array(f);
 			timestamps.emplace_back(ts);
 
 			f.timestamps = timestamps.dump().c_str();
