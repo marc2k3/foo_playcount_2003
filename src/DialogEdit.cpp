@@ -5,7 +5,8 @@ CDialogEdit::CDialogEdit()
 	: m_history_added(guids::history_added)
 	, m_history_first_played(guids::history_first_played)
 	, m_history_last_played(guids::history_last_played)
-	, m_history_playcount(guids::history_playcount) {}
+	, m_history_playcount(guids::history_playcount)
+	, m_history_rating(guids::history_rating) {}
 
 #pragma region static
 bool CDialogEdit::CheckComponent(const pfc::string& name)
@@ -38,17 +39,20 @@ BOOL CDialogEdit::OnInitDialog(CWindow, LPARAM)
 	m_window_first_played = GetDlgItem(IDC_COMBO_FIRST_PLAYED);
 	m_window_last_played = GetDlgItem(IDC_COMBO_LAST_PLAYED);
 	m_window_playcount = GetDlgItem(IDC_COMBO_PLAYCOUNT);
+	m_window_rating = GetDlgItem(IDC_COMBO_RATING);
 
 	m_history_added.on_init(m_window_added, "");
 	m_history_first_played.on_init(m_window_first_played, "");
 	m_history_last_played.on_init(m_window_last_played, "");
 	m_history_playcount.on_init(m_window_playcount, "");
+	m_history_rating.on_init(m_window_rating, "");
 
 	// not via on_init, we don't want these values saved
 	pfc::setWindowText(m_window_added, m_added);
 	pfc::setWindowText(m_window_first_played, m_first_played);
 	pfc::setWindowText(m_window_last_played, m_last_played);
 	pfc::setWindowText(m_window_playcount, m_playcount);
+	pfc::setWindowText(m_window_rating, m_rating);
 
 	if (!Component::simple_mode)
 	{
@@ -71,6 +75,7 @@ void CDialogEdit::OnClear(uint32_t, int, CWindow)
 	m_window_first_played.SetWindowTextW(L"");
 	m_window_last_played.SetWindowTextW(L"");
 	m_window_playcount.SetWindowTextW(L"");
+	m_window_rating.SetWindowTextW(L"");
 }
 
 void CDialogEdit::OnCloseCmd(uint32_t, int nID, CWindow)
@@ -81,11 +86,13 @@ void CDialogEdit::OnCloseCmd(uint32_t, int nID, CWindow)
 		m_first_played = pfc::getWindowText(m_window_first_played);
 		m_last_played = pfc::getWindowText(m_window_last_played);
 		m_playcount = pfc::getWindowText(m_window_playcount);
+		m_rating = pfc::getWindowText(m_window_rating);
 
 		if (CheckString(m_added)) m_history_added.add_item(m_added);
 		if (CheckString(m_first_played)) m_history_first_played.add_item(m_first_played);
 		if (CheckString(m_last_played)) m_history_last_played.add_item(m_last_played);
 		if (CheckString(m_playcount)) m_history_playcount.add_item(m_playcount);
+		if (CheckString(m_rating)) m_history_playcount.add_item(m_rating);
 	}
 
 	EndDialog(nID);
@@ -112,12 +119,14 @@ void CDialogEdit::OnPresets(uint32_t, int, CWindow)
 		m_window_first_played.SetWindowTextW(L"[%first_played%]");
 		m_window_last_played.SetWindowTextW(L"[%last_played%]");
 		m_window_playcount.SetWindowTextW(L"[%play_count%]");
+		m_window_rating.SetWindowTextW(L"[%rating%]");
 		break;
 	case ID_MENU_FOO_LASTFM_PLAYCOUNT_SYNC:
 		m_window_added.SetWindowTextW(L"");
 		m_window_first_played.SetWindowTextW(L"[%lfm_first_played%]");
 		m_window_last_played.SetWindowTextW(L"[%lfm_last_played%]");
 		m_window_playcount.SetWindowTextW(L"[%lfm_playcount%]");
+		m_window_rating.SetWindowTextW(L"");
 		break;
 	}
 }

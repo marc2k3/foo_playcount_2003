@@ -100,7 +100,7 @@ namespace
 			if (pfc::string_is_numeric(pc))
 			{
 				const auto playcount = pfc::atoui_ex(pc, pc.get_length());
-				if (playcount != f.playcount)
+				if (playcount <= UINT_MAX && playcount != f.playcount)
 				{
 					f.playcount = playcount;
 					changed = true;
@@ -110,6 +110,17 @@ namespace
 						f.first_played = 0;
 						f.last_played = 0;
 					}
+				}
+			}
+
+			const string8 rt = list[4];
+			if (pfc::string_is_numeric(rt))
+			{
+				const auto rating = pfc::atoui_ex(rt, rt.get_length());
+				if (rating <= 10 && rating != f.rating)
+				{
+					f.rating = rating;
+					changed = true;
 				}
 			}
 
@@ -173,12 +184,13 @@ namespace
 				if (f.first_played > 0) dlg.m_first_played = PlaybackStatistics::timestamp_to_string(f.first_played);
 				if (f.last_played > 0) dlg.m_last_played = PlaybackStatistics::timestamp_to_string(f.last_played);
 				if (f.playcount > 0) dlg.m_playcount = pfc::format_uint(f.playcount);
+				if (f.rating > 0) dlg.m_rating = pfc::format_uint(f.rating);
 			}
 
 			if (dlg.DoModal(wnd) == IDOK)
 			{
-				const auto tf = pfc::format(dlg.m_first_played, "|", dlg.m_last_played, "|", dlg.m_added, "|", dlg.m_playcount);
-				if (tf == "|||") return;
+				const auto tf = pfc::format(dlg.m_first_played, "|", dlg.m_last_played, "|", dlg.m_added, "|", dlg.m_playcount, "|", dlg.m_rating);
+				if (tf == "||||") return;
 				import_from_dialog_tf(handles, tf);
 			}
 		}
