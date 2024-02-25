@@ -14,7 +14,7 @@ for logging plays but has many more advanced features and fewer limitations.
 
 - Playcounts and dates can edited for any context menu selection.
 - Data can be imported from file tags or fields provided by other components.
-- The current time is available via title formatting as a full date time string or Unix timetamp.
+- The current time is available via title formatting as a full date time string or Unix timestamp.
 - First played, last played and added are all available as Unix timestamps.
 - How records are bound to tracks can be configured in the `Advanced Preferences`.
 
