@@ -197,6 +197,9 @@ Finally, you can import `JSON` files via the command line like this:
 The file path must be relative to the user profile folder.
 
 ## Changes
+### 0.1.6
+- Update `Edit` dialog with `Rating` field. Although setting the `Rating` via the context menu was always possible, it wasn't possible to import ratings from `foo_playcount`. This change allows that.
+
 ### 0.1.5
 - Fix bug where `OK` button in `Edit` dialog remained disabled after choosing a history item from the dropdown.
 - Update the file importer in `Advanced` mode. Previously, any timsestamps that were identical for a given track were discarded. Now the check expands and assumes any timestamps within 10 seconds of each other are duplicates. Just to be clear, this is per track.
