@@ -32,6 +32,5 @@ public:
 	static void clear(metadb_handle_list_cref handles);
 	static void on_item_played(const metadb_handle_ptr& handle);
 	static void refresh(const HashList& to_refresh);
-	static void set_fields(metadb_index_hash hash, const Fields& f);
 	static void set_fields(const metadb_index_transaction::ptr& ptr, metadb_index_hash hash, const Fields& f);
 };

@@ -196,7 +196,9 @@ void PlaybackStatistics::on_item_played(const metadb_handle_ptr& handle)
 			f.playcount = static_cast<uint32_t>(timestamps.size());
 		}
 
-		set_fields(hash, f);
+		auto ptr = api()->begin_transaction();
+		set_fields(ptr, hash, f);
+		ptr->commit();
 		api()->dispatch_refresh(guids::metadb_index, hash);
 	}
 }
@@ -207,20 +209,6 @@ void PlaybackStatistics::refresh(const HashList& to_refresh)
 	{
 		api()->dispatch_refresh(guids::metadb_index, to_refresh);
 	}
-}
-
-void PlaybackStatistics::set_fields(metadb_index_hash hash, const Fields& f)
-{
-	stream_writer_formatter_simple writer;
-	writer << f.first_played;
-	writer << f.last_played;
-	writer << f.loved;
-	writer << f.playcount;
-	writer << f.rating;
-	writer << f.added;
-	writer << f.timestamps;
-
-	api()->set_user_data(guids::metadb_index, hash, writer.m_buffer.get_ptr(), writer.m_buffer.get_size());
 }
 
 void PlaybackStatistics::set_fields(const metadb_index_transaction::ptr& ptr, metadb_index_hash hash, const Fields& f)
