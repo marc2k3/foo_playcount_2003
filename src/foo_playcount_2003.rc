@@ -1,5 +1,5 @@
 #include "resource.hpp"
-#include <winresrc.h>
+#include <winres.h>
 
 /////////////////////////////////////////////////////////////////////////////
 // English (United States) resources

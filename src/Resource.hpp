@@ -1,11 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by foo_playcount_2003.rc
 //
-
-#ifndef IDC_STATIC
-#define IDC_STATIC -1
-#endif
 
 #define IDD_DIALOG_EDIT 100
 #define IDC_BTN_PRESETS 102
