@@ -197,6 +197,9 @@ Finally, you can import `JSON` files via the command line like this:
 The file path must be relative to the user profile folder.
 
 ## Changes
+### 0.1.7
+- Add workaround for horrible library initialisation bug which prevented library viewers like `Album List` from populating themselves on startup.
+
 ### 0.1.6
 - Update `Edit` dialog with `Rating` field. Although setting the `Rating` via the context menu was always possible, it wasn't possible to import ratings from `foo_playcount`. This change allows that.
 
