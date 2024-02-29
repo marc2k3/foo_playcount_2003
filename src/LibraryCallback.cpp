@@ -16,8 +16,18 @@ namespace
 
 		void on_library_initialized() final
 		{
-			auto index = search_index_manager::get()->get_library_index();
-			update_added(index);
+			auto t = std::thread([this]
+				{
+					std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
+					fb2k::inMainThread([this]
+						{
+							auto index = search_index_manager::get()->get_library_index();
+							update_added(index);
+						});
+				});
+
+			t.detach();
 		}
 
 		void on_items_modified(metadb_handle_list_cref) final {}
