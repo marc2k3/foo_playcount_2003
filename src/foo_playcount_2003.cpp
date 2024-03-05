@@ -32,13 +32,10 @@ namespace Component
 
 		void init_stage()
 		{
-			string8 pin_to_temp;
-			advconfig_pin_to.get(pin_to_temp);
-
-			if (pin_to_temp != pin_to.get() || advconfig_simple.get() != simple_mode)
+			if (advconfig_pin_to.get() != pin_to || advconfig_simple != simple_mode)
 			{
-				pin_to.set(pin_to_temp);
-				simple_mode = advconfig_simple.get();
+				pin_to = advconfig_pin_to.get();
+				simple_mode = advconfig_simple;
 				PlaybackStatistics::api()->erase_orphaned_data(guids::metadb_index);
 			}
 
