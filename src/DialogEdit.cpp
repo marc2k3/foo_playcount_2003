@@ -28,6 +28,11 @@ bool CDialogEdit::CheckString(const string8& str)
 {
 	return str.contains("%") || str.contains("$");
 }
+
+bool CDialogEdit::GetMenuFlag(const pfc::string8& name)
+{
+	return CheckComponent(name) ? MF_STRING : MF_GRAYED;
+}
 #pragma endregion
 
 BOOL CDialogEdit::OnInitDialog(CWindow, LPARAM)
@@ -100,12 +105,9 @@ void CDialogEdit::OnCloseCmd(uint32_t, int nID, CWindow)
 
 void CDialogEdit::OnPresets(uint32_t, int, CWindow)
 {
-	const bool foo_playcount = CheckComponent("foo_playcount");
-	const bool foo_lastfm_playcount_sync = CheckComponent("foo_lastfm_playcount_sync");
-
 	HMENU menu = CreatePopupMenu();
-	AppendMenuW(menu, foo_playcount ? MF_STRING : MF_GRAYED, ID_MENU_FOO_PLAYCOUNT, L"foo_playcount");
-	AppendMenuW(menu, foo_lastfm_playcount_sync ? MF_STRING : MF_GRAYED, ID_MENU_FOO_LASTFM_PLAYCOUNT_SYNC, L"foo_lastfm_playcount_sync");
+	AppendMenuW(menu, GetMenuFlag("foo_playcount"), ID_MENU_FOO_PLAYCOUNT, L"foo_playcount");
+	AppendMenuW(menu, GetMenuFlag("foo_lastfm_playcount_sync"), ID_MENU_FOO_LASTFM_PLAYCOUNT_SYNC, L"foo_lastfm_playcount_sync");
 
 	CRect rect;
 	GetDlgItem(IDC_BTN_PRESETS).GetWindowRect(&rect);

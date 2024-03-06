@@ -24,6 +24,7 @@ public:
 private:
 	static bool CheckComponent(const pfc::string& name);
 	static bool CheckString(const string8& str);
+	static bool GetMenuFlag(const pfc::string8& name);
 
 	BOOL OnInitDialog(CWindow, LPARAM);
 	void OnClear(uint32_t, int, CWindow);
