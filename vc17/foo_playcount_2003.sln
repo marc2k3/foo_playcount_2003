@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31512.422
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "foo_playcount_2003", "foo_playcount_2003.vcxproj", "{370F9728-F728-4572-A5EC-7AD2893E5B51}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "foo_playcount_2003", "..\src\foo_playcount_2003.vcxproj", "{1A546D53-00EE-4D57-B0C0-0AC4AE3D09BF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "foobar2000_SDK", "..\foobar2000-sdk\foobar2000\SDK\foobar2000_SDK.vcxproj", "{E8091321-D79D-4575-86EF-064EA1A4A20D}"
 EndProject
@@ -23,14 +23,14 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{370F9728-F728-4572-A5EC-7AD2893E5B51}.Debug|Win32.ActiveCfg = Debug|Win32
-		{370F9728-F728-4572-A5EC-7AD2893E5B51}.Debug|Win32.Build.0 = Debug|Win32
-		{370F9728-F728-4572-A5EC-7AD2893E5B51}.Debug|x64.ActiveCfg = Debug|x64
-		{370F9728-F728-4572-A5EC-7AD2893E5B51}.Debug|x64.Build.0 = Debug|x64
-		{370F9728-F728-4572-A5EC-7AD2893E5B51}.Release|Win32.ActiveCfg = Release|Win32
-		{370F9728-F728-4572-A5EC-7AD2893E5B51}.Release|Win32.Build.0 = Release|Win32
-		{370F9728-F728-4572-A5EC-7AD2893E5B51}.Release|x64.ActiveCfg = Release|x64
-		{370F9728-F728-4572-A5EC-7AD2893E5B51}.Release|x64.Build.0 = Release|x64
+		{1A546D53-00EE-4D57-B0C0-0AC4AE3D09BF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1A546D53-00EE-4D57-B0C0-0AC4AE3D09BF}.Debug|Win32.Build.0 = Debug|Win32
+		{1A546D53-00EE-4D57-B0C0-0AC4AE3D09BF}.Debug|x64.ActiveCfg = Debug|x64
+		{1A546D53-00EE-4D57-B0C0-0AC4AE3D09BF}.Debug|x64.Build.0 = Debug|x64
+		{1A546D53-00EE-4D57-B0C0-0AC4AE3D09BF}.Release|Win32.ActiveCfg = Release|Win32
+		{1A546D53-00EE-4D57-B0C0-0AC4AE3D09BF}.Release|Win32.Build.0 = Release|Win32
+		{1A546D53-00EE-4D57-B0C0-0AC4AE3D09BF}.Release|x64.ActiveCfg = Release|x64
+		{1A546D53-00EE-4D57-B0C0-0AC4AE3D09BF}.Release|x64.Build.0 = Release|x64
 		{E8091321-D79D-4575-86EF-064EA1A4A20D}.Debug|Win32.ActiveCfg = Debug|Win32
 		{E8091321-D79D-4575-86EF-064EA1A4A20D}.Debug|Win32.Build.0 = Debug|Win32
 		{E8091321-D79D-4575-86EF-064EA1A4A20D}.Debug|x64.ActiveCfg = Debug|x64

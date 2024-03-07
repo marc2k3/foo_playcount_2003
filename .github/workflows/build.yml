@@ -17,7 +17,7 @@ jobs:
     steps:
     - name: Clone repo
       run: |
-        git clone --recursive ${{ github.server_url }}/${{ github.repository }}
+        git clone ${{ github.server_url }}/${{ github.repository }}
 
     - name: Set up MSBuild
       uses: microsoft/setup-msbuild@v2
@@ -33,20 +33,20 @@ jobs:
         mkdir component
         mkdir component\x64
 
-    - name: Build x86
+    - name: Build Win32
       working-directory: ${{ matrix.project }}
       run: |
-        msbuild src\${{ matrix.project }}.sln -m -p:Platform=Win32 -p:Configuration=Release
-        copy src\Win32\Release\${{ matrix.project }}.dll ..\component
-        copy src\Win32\Release\${{ matrix.project }}.pdb ..\component
+        msbuild vc17\${{ matrix.project }}.sln -m -p:Platform=Win32 -p:Configuration=Release
+        copy vc17\Win32\Release\${{ matrix.project }}.dll ..\component
+        copy vc17\Win32\Release\${{ matrix.project }}.pdb ..\component
         git clean -fdx && git submodule foreach --recursive git clean -fdx
 
     - name: Build x64
       working-directory: ${{ matrix.project }}
       run: |
-        msbuild src\${{ matrix.project }}.sln -m -p:Platform=x64 -p:Configuration=Release
-        copy src\x64\Release\${{ matrix.project }}.dll ..\component\x64
-        copy src\x64\Release\${{ matrix.project }}.pdb ..\component\x64
+        msbuild vc17\${{ matrix.project }}.sln -m -p:Platform=x64 -p:Configuration=Release
+        copy vc17\x64\Release\${{ matrix.project }}.dll ..\component\x64
+        copy vc17\x64\Release\${{ matrix.project }}.pdb ..\component\x64
 
     - name: Upload with pdb
       if: startsWith(github.ref, 'refs/tags')
