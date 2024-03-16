@@ -36,5 +36,5 @@ namespace
 		}
 	};
 
-	FB2K_SERVICE_FACTORY(CommandLineHandler)
+	FB2K_SERVICE_FACTORY(CommandLineHandler);
 }
