@@ -17,7 +17,7 @@ jobs:
     steps:
     - name: Clone repo
       run: |
-        git clone ${{ github.server_url }}/${{ github.repository }}
+        git clone --recurse ${{ github.server_url }}/${{ github.repository }}
 
     - name: Set up MSBuild
       uses: microsoft/setup-msbuild@v2
@@ -25,8 +25,8 @@ jobs:
     - name: Set up vcpkg
       run: |
         vcpkg integrate install
-        vcpkg install nlohmann-json wtl --triplet x86-windows
-        vcpkg install nlohmann-json wtl --triplet x64-windows
+        vcpkg install nlohmann-json wtl --triplet x86-windows-static
+        vcpkg install nlohmann-json wtl --triplet x64-windows-static
 
     - name: Create component folder
       run: |
