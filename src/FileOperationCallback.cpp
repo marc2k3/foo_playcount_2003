@@ -36,7 +36,7 @@ namespace
 			auto client = MetadbIndex::client();
 			auto ptr = PlaybackStatistics::api()->begin_transaction();
 
-			for (const size_t i : std::views::iota(0U, count))
+			for (const size_t i : std::views::iota(size_t{}, count))
 			{
 				const auto old_path = display_path(from[i]);
 				const auto new_path = display_path(to[i]);

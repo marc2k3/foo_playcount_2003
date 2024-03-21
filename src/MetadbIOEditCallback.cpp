@@ -16,7 +16,7 @@ namespace
 			auto client = MetadbIndex::client();
 			auto ptr = PlaybackStatistics::api()->begin_transaction();
 
-			for (const size_t i : std::views::iota(0U, count))
+			for (const size_t i : std::views::iota(size_t{}, count))
 			{
 				const auto& location = handles[i]->get_location();
 				const auto old_hash = client->transform(*before[i], location);
