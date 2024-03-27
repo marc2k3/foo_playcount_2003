@@ -26,11 +26,11 @@ namespace Component
 	namespace
 	{
 		advconfig_branch_factory advconfig_branch(name + " (read documentation, changing settings causes data loss)", guids::advconfig_branch, advconfig_branch::guid_branch_tools, 0.0);
-		advconfig_string_factory advconfig_pin_to("Title format pattern", guids::advconfig_pin_to, guids::advconfig_branch, 0.0, Component::path_subsong, preferences_state::needs_restart);
+		advconfig_string_factory advconfig_pin_to("Title format pattern", guids::advconfig_pin_to, guids::advconfig_branch, 0.0, path_subsong, preferences_state::needs_restart);
 		advconfig_radio_factory advconfig_simple("Simple mode", guids::advconfig_simple, guids::advconfig_branch, 1.0, true, preferences_state::needs_restart);
 		advconfig_radio_factory advconfig_advanced("Advanced mode", guids::advconfig_advanced, guids::advconfig_branch, 2.0, false, preferences_state::needs_restart);
 
-		void init_stage()
+		void init()
 		{
 			if (advconfig_pin_to.get() != pin_to || advconfig_simple != simple_mode)
 			{
@@ -42,6 +42,6 @@ namespace Component
 			MetadbIndex::init();
 		}
 
-		FB2K_ON_INIT_STAGE(init_stage, init_stages::after_config_read);
+		FB2K_ON_INIT_STAGE(init, init_stages::after_config_read)
 	}
 }
