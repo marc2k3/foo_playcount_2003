@@ -140,12 +140,21 @@ uint32_t PlaybackStatistics::playcount_year(const Fields& f, bool last_year)
 uint32_t PlaybackStatistics::string_to_timestamp(const string8& str)
 {
 	static const auto lower_limit = pfc::fileTimeUtoW(1);
-	static const auto upper_limit = pfc::fileTimeUtoW(UINT_MAX - 1);
+	static const auto upper_limit = pfc::fileTimeUtoW(UINT_MAX);
+	uint64_t windows_time{};
 
 	if (str.empty()) return UINT_MAX;
 	if (str == "0") return 0; // special handling for edit dialog
 
-	const auto windows_time = pfc::filetimestamp_from_string(str);
+	if (str.get_length() == 10) // YYYY-DD-MM
+	{
+		windows_time = pfc::filetimestamp_from_string(str + " 00:00:00");
+	}
+	else
+	{
+		windows_time = pfc::filetimestamp_from_string(str);
+	}
+
 	if (windows_time == filetimestamp_invalid || windows_time < lower_limit || windows_time > upper_limit) return UINT_MAX;
 
 	return static_cast<uint32_t>(pfc::fileTimeWtoU(windows_time));

@@ -13,7 +13,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Playcount 2003"
 FONT 8, "Segoe UI", 400, 0, 0x0
 BEGIN
-    LTEXT         "- Enter 0 to clear existing values.\n- Leave blank to preserve existing values.\n- Title format can be used to import from tags/other components.\n- Dates must be in full YYYY-MM-DD HH:MM:SS format.", IDC_STATIC, 7, 7, 386, 32
+    LTEXT         "- Enter 0 to clear existing values.\n- Leave blank to preserve existing values.\n- Title format can be used to import from tags/other components.\n- Dates can be YYYY-MM-DD or the full YYYY-MM-DD HH:MM:SS.", IDC_STATIC, 7, 7, 386, 32
     LTEXT         "Added:",        IDC_STATIC,             7, 45, 140, 16
     LTEXT         "First Played:", IDC_STATIC,             7, 61, 140, 16
     LTEXT         "Last Played:",  IDC_STATIC,             7, 77, 140, 16
