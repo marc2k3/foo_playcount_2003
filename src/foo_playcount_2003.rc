@@ -13,12 +13,12 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Playcount 2003"
 FONT 8, "Segoe UI", 400, 0, 0x0
 BEGIN
-    LTEXT         "- Enter 0 to clear existing values.\n- Leave blank to preserve existing values.\n- Title format can be used to import from tags/other components.\n- Dates must be in full YYYY-MM-DD HH:MM:SS format.", IDC_LABEL_PROMPT, 7, 7, 386, 32
-    LTEXT         "Added:",        IDC_LABEL_ADDED,        7, 45, 140, 16
-    LTEXT         "First Played:", IDC_LABEL_FIRST_PLAYED, 7, 61, 140, 16
-    LTEXT         "Last Played:",  IDC_LABEL_LAST_PLAYED,  7, 77, 140, 16
-    LTEXT         "Playcount:",    IDC_LABEL_PLAYCOUNT,    7, 93, 140, 16
-    LTEXT         "Rating:",       IDC_LABEL_RATING,       7, 109, 140, 16
+    LTEXT         "- Enter 0 to clear existing values.\n- Leave blank to preserve existing values.\n- Title format can be used to import from tags/other components.\n- Dates must be in full YYYY-MM-DD HH:MM:SS format.", IDC_STATIC, 7, 7, 386, 32
+    LTEXT         "Added:",        IDC_STATIC,             7, 45, 140, 16
+    LTEXT         "First Played:", IDC_STATIC,             7, 61, 140, 16
+    LTEXT         "Last Played:",  IDC_STATIC,             7, 77, 140, 16
+    LTEXT         "Playcount:",    IDC_STATIC,             7, 93, 140, 16
+    LTEXT         "Rating:",       IDC_STATIC,             7, 109, 140, 16
     COMBOBOX                       IDC_COMBO_ADDED,        70, 43, 242, 14,  CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     COMBOBOX                       IDC_COMBO_FIRST_PLAYED, 70, 59, 242, 14,  CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     COMBOBOX                       IDC_COMBO_LAST_PLAYED,  70, 75, 242, 14,  CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
