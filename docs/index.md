@@ -173,7 +173,7 @@ for (var i = 0; i < items.Count; i++) {
 	var obj = {
 		"id" = tfo_id.EvalWithMetadb(item),
 		// empty array on purpose, scripters should know what to do!
-		// must be Unix timestamps (seconds, not milliseonds)
+		// must be Unix timestamps (seconds, not milliseconds)
 		"2003_timestamps" : [],
 	};
 	arr.push(obj);
@@ -197,6 +197,10 @@ Finally, you can import `JSON` files via the command line like this:
 The file path must be relative to the user profile folder.
 
 ## Changes
+
+### 0.1.8
+- The `Edit` dialog now supports dates in `YYYY-MM-DD` format. The time will be set to `00:00:00` automatically.
+
 ### 0.1.7
 - Add workaround for horrible library initialisation bug which prevented library viewers like `Album List` from populating themselves on startup.
 
