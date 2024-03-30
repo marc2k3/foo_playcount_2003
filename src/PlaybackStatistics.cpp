@@ -146,7 +146,7 @@ uint32_t PlaybackStatistics::string_to_timestamp(const string8& str)
 	if (str.empty()) return UINT_MAX;
 	if (str == "0") return 0; // special handling for edit dialog
 
-	if (str.get_length() == 10) // YYYY-DD-MM
+	if (str.get_length() == 10) // YYYY-MM-DD
 	{
 		windows_time = pfc::filetimestamp_from_string(str + " 00:00:00");
 	}
