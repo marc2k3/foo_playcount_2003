@@ -12,11 +12,10 @@ namespace
 
 			PlaybackStatistics::HashList hash_list;
 			PlaybackStatistics::HashSet hash_set;
-			const size_t count = handles.get_count();
 			auto client = MetadbIndex::client();
 			auto ptr = PlaybackStatistics::api()->begin_transaction();
 
-			for (const size_t i : std::views::iota(size_t{}, count))
+			for (const size_t i : std::views::iota(size_t{}, handles.get_count()))
 			{
 				const auto& location = handles[i]->get_location();
 				const auto old_hash = client->transform(*before[i], location);

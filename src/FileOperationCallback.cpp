@@ -29,22 +29,18 @@ namespace
 		{
 			if (Component::pin_to.get() != Component::path_subsong) return;
 
-			static const PlaybackStatistics::Fields dummy;
-			const size_t count = from.get_count();
-
 			PlaybackStatistics::HashList to_refresh;
 			auto client = MetadbIndex::client();
 			auto ptr = PlaybackStatistics::api()->begin_transaction();
 
-			for (const size_t i : std::views::iota(size_t{}, count))
+			for (const size_t i : std::views::iota(size_t{}, from.get_count()))
 			{
 				const auto old_path = display_path(from[i]);
 				const auto new_path = display_path(to[i]);
-
 				const auto old_hash = client->hash_path(old_path);
 				const auto new_hash = client->hash_path(new_path);
-
 				const auto f = PlaybackStatistics::get_fields(old_hash);
+
 				PlaybackStatistics::set_fields(ptr, new_hash, f);
 				to_refresh.add_item(new_hash);
 			}
