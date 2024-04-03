@@ -9,6 +9,7 @@
 #include <fstream>
 #include <ranges>
 #include <set>
+#include <string>
 #include <vector>
 
 #define JSON_USE_IMPLICIT_CONVERSIONS 0
@@ -20,8 +21,6 @@ using JSON = nlohmann::json;
 #include <pfc/filetimetools.h>
 #include <pfc/string-conv-lite.h>
 #include <SDK/coreDarkMode.h>
-
-using pfc::string8;
 
 #include "foo_playcount_2003.hpp"
 #include "GUIDS.hpp"

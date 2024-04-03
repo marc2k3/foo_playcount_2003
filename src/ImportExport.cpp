@@ -1,9 +1,9 @@
 #include "stdafx.hpp"
 #include "ImportExport.hpp"
 
-std::filesystem::path ImportExport::get_fs_path(const string8& path)
+std::filesystem::path ImportExport::get_fs_path(std::string_view path)
 {
-	auto wpath = pfc::wideFromUTF8(path);
+	auto wpath = pfc::wideFromUTF8(path.data());
 	return std::filesystem::path(wpath.c_str());
 }
 
@@ -28,7 +28,7 @@ std::string ImportExport::read_file(const std::filesystem::path& path)
 	return content;
 }
 
-string8 ImportExport::from_file(metadb_handle_list_cref handles, const string8& path)
+std::string ImportExport::from_file(metadb_handle_list_cref handles, std::string_view path)
 {
 	const auto fs_path = get_fs_path(path);
 
@@ -64,7 +64,7 @@ string8 ImportExport::from_file(metadb_handle_list_cref handles, const string8& 
 		auto& jid = record["id"];
 		if (!jid.is_string()) continue; // not a good sign but we'll persist
 
-		const string8 id = jid.get<std::string>().c_str();
+		const auto id = jid.get<std::string>();
 		const auto hash = client->hash_string(id);
 
 		if (!hashes.contains(hash)) continue; // hash not found in set for a given handle list
@@ -145,12 +145,12 @@ string8 ImportExport::from_file(metadb_handle_list_cref handles, const string8& 
 
 	if (to_refresh.get_count() == 0)
 	{
-		return pfc::format("The selected JSON file contained ", matches, " matches but no values were modified.");
+		return pfc::format("The selected JSON file contained ", matches, " matches but no values were modified.").get_ptr();
 	}
 
 	ptr->commit();
 	PlaybackStatistics::refresh(to_refresh);
-	return pfc::format(to_refresh.get_count(), " records were imported.");
+	return pfc::format(to_refresh.get_count(), " records were imported.").get_ptr();
 }
 
 uint32_t ImportExport::get_uint32(JSON& json, uint32_t upper_limit)
@@ -168,21 +168,21 @@ uint32_t ImportExport::get_uint32(JSON& json, uint32_t upper_limit)
 
 void ImportExport::from_file(metadb_handle_list_cref handles)
 {
-	string8 path;
+	pfc::string8 path;
 	if (!uGetOpenFileName(core_api::get_main_window(), "JSON file|*.json|All files|*.*", 0, "txt", "Import from", nullptr, path, FALSE)) return;
 
 	const auto msg = from_file(handles, path);
 	popup(msg);
 }
 
-void ImportExport::popup(const string8& msg)
+void ImportExport::popup(std::string_view msg)
 {
-	popup_message::g_show(msg, Component::name);
+	popup_message::g_show(msg.data(), Component::name.data());
 }
 
 void ImportExport::to_file(metadb_handle_list_cref handles)
 {
-	string8 path;
+	pfc::string8 path;
 	if (!uGetOpenFileName(core_api::get_main_window(), "JSON file|*.json|All files|*.*", 0, "txt", "Save as", nullptr, path, TRUE)) return;
 
 	titleformat_object_ptr obj;
@@ -200,7 +200,7 @@ void ImportExport::to_file(metadb_handle_list_cref handles)
 			const auto f = PlaybackStatistics::get_fields(hash);
 			if (!f) continue;
 
-			string8 id;
+			pfc::string8 id;
 			handle->format_title(nullptr, id, obj, nullptr);
 			auto entry = JSONHelper::create_export_entry(id, f);
 			data.emplace_back(entry);

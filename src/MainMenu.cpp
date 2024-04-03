@@ -77,7 +77,7 @@ namespace
 	private:
 		bool prompt()
 		{
-			return popup_message_v3::get()->messageBox(core_api::get_main_window(), "Existing Media Library data will be cleared. Continue?", Component::name, MB_YESNO) == IDYES;
+			return popup_message_v3::get()->messageBox(core_api::get_main_window(), "Existing Media Library data will be cleared. Continue?", Component::name.data(), MB_YESNO) == IDYES;
 		}
 
 		metadb_handle_list get_library_items()
@@ -88,6 +88,6 @@ namespace
 		}
 	};
 
-	static mainmenu_group_popup_factory g_mainmenu_group(guids::mainmenu_group, mainmenu_groups::library, mainmenu_commands::sort_priority_base, Component::name);
+	static mainmenu_group_popup_factory g_mainmenu_group(guids::mainmenu_group, mainmenu_groups::library, mainmenu_commands::sort_priority_base, Component::name.data());
 	FB2K_SERVICE_FACTORY(MainMenu);
 }

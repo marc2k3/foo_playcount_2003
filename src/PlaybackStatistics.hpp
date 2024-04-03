@@ -6,7 +6,7 @@ public:
 	struct Fields
 	{
 		uint32_t first_played{}, last_played{}, loved{}, playcount{}, rating{}, added{};
-		string8 timestamps = "[]";
+		pfc::string8 timestamps = "[]";
 
 		operator bool() const
 		{
@@ -23,12 +23,13 @@ public:
 	static HashSet get_hashes(metadb_handle_list_cref handles);
 	static bool update_value(uint32_t new_value, uint32_t& old_value);
 	static metadb_index_manager_v2::ptr api();
-	static string8 timestamp_to_string(uint64_t ts);
+	static pfc::string8 timestamp_to_string(uint64_t ts);
 	static uint32_t get_total_playcount(metadb_handle_list_cref handles, track_property_provider_v5_info_source& source);
-	static uint32_t get_year(uint32_t ts);
+	static uint32_t get_year(uint64_t ts);
 	static uint32_t now();
 	static uint32_t playcount_year(const Fields& f, bool last_year);
-	static uint32_t string_to_timestamp(const string8& str);
+	static uint32_t string_to_timestamp(std::string_view str);
+	static uint32_t windows_to_unix(uint64_t ts);
 	static void clear(metadb_handle_list_cref handles);
 	static void on_item_played(const metadb_handle_ptr& handle);
 	static void refresh(const HashList& to_refresh);

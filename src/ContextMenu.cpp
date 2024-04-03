@@ -81,10 +81,10 @@ namespace
 		}
 
 	private:
-		bool parse_tf(const string8& str, PlaybackStatistics::Fields& f)
+		bool parse_tf(std::string_view str, PlaybackStatistics::Fields& f)
 		{
 			pfc::string_list_impl list;
-			pfc::splitStringByChar(list, str, '|');
+			pfc::splitStringByChar(list, str.data(), '|');
 			bool changed{};
 
 			const auto first_played = PlaybackStatistics::string_to_timestamp(list[0]);
@@ -96,10 +96,10 @@ namespace
 			const auto added = PlaybackStatistics::string_to_timestamp(list[2]);
 			if (PlaybackStatistics::update_value(added, f.added)) changed = true;
 
-			const string8 pc = list[3];
-			if (pfc::string_is_numeric(pc))
+			const std::string pc = list[3];
+			if (pfc::string_is_numeric(pc.c_str()))
 			{
-				const auto playcount = pfc::atoui_ex(pc, pc.get_length());
+				const auto playcount = std::stoul(pc);
 				if (playcount <= UINT_MAX && playcount != f.playcount)
 				{
 					f.playcount = playcount;
@@ -113,10 +113,10 @@ namespace
 				}
 			}
 
-			const string8 rt = list[4];
-			if (pfc::string_is_numeric(rt))
+			const std::string rt = list[4];
+			if (pfc::string_is_numeric(rt.c_str()))
 			{
-				const auto rating = pfc::atoui_ex(rt, rt.get_length());
+				const auto rating = std::stoul(rt);
 				if (rating <= 10 && rating != f.rating)
 				{
 					f.rating = rating;
@@ -127,10 +127,10 @@ namespace
 			return changed;
 		}
 
-		void import_from_dialog_tf(metadb_handle_list_cref handles, const string8& tf)
+		void import_from_dialog_tf(metadb_handle_list_cref handles, std::string_view tf)
 		{
 			titleformat_object_ptr obj;
-			titleformat_compiler::get()->compile_safe(obj, tf);
+			titleformat_compiler::get()->compile_safe(obj, tf.data());
 
 			PlaybackStatistics::HashList to_refresh;
 			PlaybackStatistics::HashSet hash_set;
@@ -145,7 +145,7 @@ namespace
 				{
 					unique_ids++;
 
-					string8 str;
+					pfc::string8 str;
 					handle->format_title(nullptr, str, obj, nullptr);
 					auto f = PlaybackStatistics::get_fields(hash);
 
@@ -163,7 +163,7 @@ namespace
 				PlaybackStatistics::refresh(to_refresh);
 			}
 
-			FB2K_console_formatter() << Component::name << ": " << handles.get_count() << " items were selected and " << unique_ids << " unique ids were found. Of those, " << to_refresh.get_count() << " were updated.";
+			FB2K_console_formatter() << Component::name.data() << ": " << handles.get_count() << " items were selected and " << unique_ids << " unique ids were found. Of those, " << to_refresh.get_count() << " were updated.";
 		}
 
 		void init_dialog(metadb_handle_list_cref handles)
@@ -214,6 +214,6 @@ namespace
 		}
 	};
 
-	static contextmenu_group_popup_factory g_context_group(guids::context_group, contextmenu_groups::root, Component::name, 0);
+	static contextmenu_group_popup_factory g_context_group(guids::context_group, contextmenu_groups::root, Component::name.data(), 0);
 	FB2K_SERVICE_FACTORY(ContextMenu);
 }

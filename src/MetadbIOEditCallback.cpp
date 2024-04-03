@@ -8,7 +8,7 @@ namespace
 		void on_edited(metadb_handle_list_cref handles, t_infosref before, t_infosref after)
 		{
 			// ignore tag updates if bound to path/subsong
-			if (Component::pin_to.get() == Component::path_subsong) return;
+			if (Component::pin_to.get() == Component::path_subsong.data()) return;
 
 			PlaybackStatistics::HashList hash_list;
 			PlaybackStatistics::HashSet hash_set;

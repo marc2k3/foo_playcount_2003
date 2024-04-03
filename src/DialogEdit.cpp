@@ -13,7 +13,7 @@ bool CDialogEdit::CheckComponent(const pfc::string& name)
 {
 	for (auto ptr : componentversion::enumerate())
 	{
-		string8 str;
+		pfc::string8 str;
 		ptr->get_file_name(str);
 		if (stricmp_utf8(str, name) == 0)
 		{
@@ -24,14 +24,14 @@ bool CDialogEdit::CheckComponent(const pfc::string& name)
 	return false;
 }
 
-bool CDialogEdit::CheckString(const string8& str)
-{
-	return str.contains("%") || str.contains("$");
-}
-
 bool CDialogEdit::GetMenuFlag(const pfc::string8& name)
 {
 	return CheckComponent(name) ? MF_STRING : MF_GRAYED;
+}
+
+bool CDialogEdit::IsTF(std::string_view str)
+{
+	return str.contains("%") || str.contains("$");
 }
 #pragma endregion
 
@@ -93,11 +93,11 @@ void CDialogEdit::OnCloseCmd(uint32_t, int nID, CWindow)
 		m_playcount = pfc::getWindowText(m_window_playcount);
 		m_rating = pfc::getWindowText(m_window_rating);
 
-		if (CheckString(m_added)) m_history_added.add_item(m_added);
-		if (CheckString(m_first_played)) m_history_first_played.add_item(m_first_played);
-		if (CheckString(m_last_played)) m_history_last_played.add_item(m_last_played);
-		if (CheckString(m_playcount)) m_history_playcount.add_item(m_playcount);
-		if (CheckString(m_rating)) m_history_playcount.add_item(m_rating);
+		if (IsTF(m_added)) m_history_added.add_item(m_added);
+		if (IsTF(m_first_played)) m_history_first_played.add_item(m_first_played);
+		if (IsTF(m_last_played)) m_history_last_played.add_item(m_last_played);
+		if (IsTF(m_playcount)) m_history_playcount.add_item(m_playcount);
+		if (IsTF(m_rating)) m_history_playcount.add_item(m_rating);
 	}
 
 	EndDialog(nID);

@@ -2,13 +2,13 @@
 
 namespace Component
 {
-	static const string8 name = "Playcount 2003";
-	static const string8 path_subsong = "%path%|%subsong%";
+	static const std::string_view name = "Playcount 2003";
+	static const std::string_view path_subsong = "%path%|%subsong%";
 
 	struct MenuItem
 	{
 		const GUID* guid;
-		const string8 name;
+		const std::string_view name;
 	};
 
 	extern cfg_bool simple_mode;

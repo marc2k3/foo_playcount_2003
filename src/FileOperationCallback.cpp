@@ -18,16 +18,16 @@ namespace
 		}
 
 	private:
-		string8 display_path(const string8& path)
+		pfc::string8 display_path(std::string_view path)
 		{
-			string8 ret;
-			filesystem::g_get_display_path(path, ret);
+			pfc::string8 ret;
+			filesystem::g_get_display_path(path.data(), ret);
 			return ret;
 		}
 
 		void on_files(t_pathlist from, t_pathlist to)
 		{
-			if (Component::pin_to.get() != Component::path_subsong) return;
+			if (Component::pin_to.get() != Component::path_subsong.data()) return;
 
 			PlaybackStatistics::HashList to_refresh;
 			auto client = MetadbIndex::client();

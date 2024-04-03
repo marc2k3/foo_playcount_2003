@@ -20,30 +20,30 @@ void MetadbIndex::init()
 	{
 		api->add(client(), guids::metadb_index, system_time_periods::week * 4);
 		api->dispatch_global_refresh();
-		FB2K_console_print(Component::name, ": initialised in ", Component::simple_mode ? "simple" : "advanced", " mode.");
+		FB2K_console_print(Component::name.data(), ": initialised in ", Component::simple_mode ? "simple" : "advanced", " mode.");
 	}
 	catch (const std::exception& e)
 	{
 		api->remove(guids::metadb_index);
-		FB2K_console_print(Component::name, ": critical initialisation failure: ", e.what());
+		FB2K_console_print(Component::name.data(), ": critical initialisation failure: ", e.what());
 	}
 }
 #pragma endregion
 
-metadb_index_hash MetadbIndex::hash_path(const string8& path)
+metadb_index_hash MetadbIndex::hash_path(std::string_view path)
 {
-	const auto str = pfc::format(path, "|0");
+	const auto str = pfc::format(path.data(), "|0");
 	return hash_string(str);
 }
 
-metadb_index_hash MetadbIndex::hash_string(const string8& str)
+metadb_index_hash MetadbIndex::hash_string(std::string_view str)
 {
-	return m_hasher->process_single_string(str).xorHalve();
+	return m_hasher->process_single_string(str.data()).xorHalve();
 }
 
 metadb_index_hash MetadbIndex::transform(const file_info& info, const playable_location& location)
 {
-	string8 str;
+	pfc::string8 str;
 	m_obj->run_simple(location, &info, str);
 	return hash_string(str);
 }

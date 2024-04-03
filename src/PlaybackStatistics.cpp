@@ -4,6 +4,7 @@ PlaybackStatistics::Fields PlaybackStatistics::get_fields(metadb_index_hash hash
 {
 	mem_block_container_impl temp;
 	api()->get_user_data(guids::metadb_index, hash, temp);
+
 	if (temp.get_size() > 0)
 	{
 		try
@@ -27,6 +28,7 @@ PlaybackStatistics::Fields PlaybackStatistics::get_fields(metadb_index_hash hash
 		}
 		catch (exception_io_data) {}
 	}
+
 	return Fields();
 }
 
@@ -61,9 +63,9 @@ metadb_index_manager_v2::ptr PlaybackStatistics::api()
 	return cached;
 }
 
-string8 PlaybackStatistics::timestamp_to_string(uint64_t ts)
+pfc::string8 PlaybackStatistics::timestamp_to_string(uint64_t ts)
 {
-	const uint64_t windows_time = pfc::fileTimeUtoW(ts);
+	const auto windows_time = pfc::fileTimeUtoW(ts);
 	return pfc::format_filetimestamp(windows_time);
 }
 
@@ -88,7 +90,7 @@ uint32_t PlaybackStatistics::get_total_playcount(metadb_handle_list_cref handles
 	return total;
 }
 
-uint32_t PlaybackStatistics::get_year(uint32_t ts)
+uint32_t PlaybackStatistics::get_year(uint64_t ts)
 {
 	const auto windows_time = pfc::fileTimeUtoW(ts);
 
@@ -111,7 +113,7 @@ uint32_t PlaybackStatistics::get_year(uint32_t ts)
 
 uint32_t PlaybackStatistics::now()
 {
-	return static_cast<uint32_t>(pfc::fileTimeWtoU(pfc::fileTimeNow()));
+	return windows_to_unix(pfc::fileTimeNow());
 }
 
 uint32_t PlaybackStatistics::playcount_year(const Fields& f, bool last_year)
@@ -135,27 +137,35 @@ uint32_t PlaybackStatistics::playcount_year(const Fields& f, bool last_year)
 	return count;
 }
 
-uint32_t PlaybackStatistics::string_to_timestamp(const string8& str)
+uint32_t PlaybackStatistics::string_to_timestamp(std::string_view str)
 {
+	// special handling for edit dialog
+	if (str == "0") return 0;
+
+	if (str.empty()) return UINT_MAX;
+
 	static const auto lower_limit = pfc::fileTimeUtoW(1);
 	static const auto upper_limit = pfc::fileTimeUtoW(UINT_MAX);
 	uint64_t windows_time{};
 
-	if (str.empty()) return UINT_MAX;
-	if (str == "0") return 0; // special handling for edit dialog
-
-	if (str.get_length() == 10) // YYYY-MM-DD
+	// YYYY-MM-DD
+	if (str.length() == 10)
 	{
-		windows_time = pfc::filetimestamp_from_string(str + " 00:00:00");
+		windows_time = pfc::filetimestamp_from_string(pfc::string8(str) + " 00:00:00");
 	}
 	else
 	{
-		windows_time = pfc::filetimestamp_from_string(str);
+		windows_time = pfc::filetimestamp_from_string(str.data());
 	}
 
 	if (windows_time == filetimestamp_invalid || windows_time < lower_limit || windows_time > upper_limit) return UINT_MAX;
 
-	return static_cast<uint32_t>(pfc::fileTimeWtoU(windows_time));
+	return windows_to_unix(windows_time);
+}
+
+uint32_t PlaybackStatistics::windows_to_unix(uint64_t ts)
+{
+	return static_cast<uint32_t>(pfc::fileTimeWtoU(ts));
 }
 
 void PlaybackStatistics::clear(metadb_handle_list_cref handles)

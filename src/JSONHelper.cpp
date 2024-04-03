@@ -1,10 +1,10 @@
 #include "stdafx.hpp"
 #include "JSONHelper.hpp"
 
-JSON JSONHelper::create_export_entry(const string8& id, const PlaybackStatistics::Fields& f)
+JSON JSONHelper::create_export_entry(std::string_view id, const PlaybackStatistics::Fields& f)
 {
 	JSON json;
-	json["id"] = id.get_ptr();
+	json["id"] = id;
 
 	if (f.added > 0) json["2003_added"] = f.added;
 	if (f.loved > 0) json["2003_loved"] = f.loved;
