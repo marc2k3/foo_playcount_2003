@@ -2,8 +2,8 @@
 
 namespace Component
 {
-	static const std::string_view name = "Playcount 2003";
-	static const std::string_view path_subsong = "%path%|%subsong%";
+	static constexpr std::string_view name = "Playcount 2003";
+	static constexpr std::string_view path_subsong = "%path%|%subsong%";
 
 	struct MenuItem
 	{
