@@ -54,7 +54,7 @@ JSON JSONHelper::get_timestamps_array(const PlaybackStatistics::Fields& f)
 	return timestamps;
 }
 
-JSON JSONHelper::parse(const std::string& str)
+JSON JSONHelper::parse(std::string_view str)
 {
 	return JSON::parse(str, nullptr, false);
 }
