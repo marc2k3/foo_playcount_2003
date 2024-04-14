@@ -18,8 +18,10 @@ namespace
 
 				metadb_handle_list items;
 				library_manager::get()->get_all_items(items);
+
 				const auto msg = ImportExport::from_file(items, path);
-				FB2K_console_print(Component::name.data(), ": Command line import: ", msg.c_str());
+				FB2K_console_formatter() << fmt::format("{}: Command line import: {}", Component::name, msg).c_str();
+
 				return RESULT_PROCESSED;
 			}
 

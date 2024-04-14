@@ -20,19 +20,19 @@ void MetadbIndex::init()
 	{
 		api->add(client(), guids::metadb_index, system_time_periods::week * 4);
 		api->dispatch_global_refresh();
-		FB2K_console_print(Component::name.data(), ": initialised in ", Component::simple_mode ? "simple" : "advanced", " mode.");
+		FB2K_console_formatter() << fmt::format("{}: initialised in {} mode.", Component::name, Component::simple_mode ? "simple" : "advanced").c_str();
 	}
 	catch (const std::exception& e)
 	{
 		api->remove(guids::metadb_index);
-		FB2K_console_print(Component::name.data(), ": critical initialisation failure: ", e.what());
+		FB2K_console_formatter() << fmt::format("{}: critical initialisation failure: {}", Component::name, e.what()).c_str();
 	}
 }
 #pragma endregion
 
 metadb_index_hash MetadbIndex::hash_path(std::string_view path)
 {
-	const auto str = pfc::format(path.data(), "|0");
+	const auto str = fmt::format("{}|0", path);
 	return hash_string(str);
 }
 

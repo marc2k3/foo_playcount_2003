@@ -145,12 +145,12 @@ std::string ImportExport::from_file(metadb_handle_list_cref handles, std::string
 
 	if (to_refresh.get_count() == 0)
 	{
-		return pfc::format("The selected JSON file contained ", matches, " matches but no values were modified.").get_ptr();
+		return fmt::format("The selected JSON file contained {} matches but no values were modified.", matches);
 	}
 
 	ptr->commit();
 	PlaybackStatistics::refresh(to_refresh);
-	return pfc::format(to_refresh.get_count(), " records were imported.").get_ptr();
+	return fmt::format("{} records were imported.", to_refresh.get_count());
 }
 
 uint32_t ImportExport::get_uint32(JSON& json, uint32_t upper_limit)
@@ -214,7 +214,8 @@ void ImportExport::to_file(metadb_handle_list_cref handles)
 		if (stream.is_open())
 		{
 			stream << data.dump();
-			popup(pfc::format(data.size(), " record(s) exported succesfully."));
+			const auto msg = fmt::format("{} record(s) exported succesfully.", data.size());
+			popup(msg);
 		}
 	}
 	else

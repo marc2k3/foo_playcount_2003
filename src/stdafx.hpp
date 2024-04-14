@@ -12,6 +12,9 @@
 #include <string>
 #include <vector>
 
+#define FMT_HEADER_ONLY
+#include <fmt/format.h>
+
 #define JSON_USE_IMPLICIT_CONVERSIONS 0
 #include <nlohmann/json.hpp>
 using JSON = nlohmann::json;

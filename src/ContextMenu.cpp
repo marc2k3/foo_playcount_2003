@@ -163,7 +163,7 @@ namespace
 				PlaybackStatistics::refresh(to_refresh);
 			}
 
-			FB2K_console_formatter() << Component::name.data() << ": " << handles.get_count() << " items were selected and " << unique_ids << " unique ids were found. Of those, " << to_refresh.get_count() << " were updated.";
+			FB2K_console_formatter() << fmt::format("{}: {} items were selected and {} unique ids were found. Of those, {} were updated.", Component::name, handles.get_count(), unique_ids, to_refresh.get_count()).c_str();
 		}
 
 		void init_dialog(metadb_handle_list_cref handles)

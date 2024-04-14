@@ -81,7 +81,7 @@ namespace
 			}
 			else
 			{
-				out = pfc::format("Set Rating to ", index);
+				out = fmt::format("Set Rating to {}", index);
 			}
 		}
 	};

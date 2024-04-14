@@ -151,7 +151,7 @@ uint32_t PlaybackStatistics::string_to_timestamp(std::string_view str)
 	// YYYY-MM-DD
 	if (str.length() == 10)
 	{
-		windows_time = pfc::filetimestamp_from_string(pfc::string8(str) + " 00:00:00");
+		windows_time = pfc::filetimestamp_from_string(fmt::format("{} 00:00:00", str).c_str());
 	}
 	else
 	{
