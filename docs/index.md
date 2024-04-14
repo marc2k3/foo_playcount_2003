@@ -127,10 +127,21 @@ The component will not check if selection items belong to the library when writi
 	internally, zero is reserved for indicating not set. The latest value is some time in the year 2106
 	because 32bit unsigned integers are used for storage.
 
-## Simple mode
-!!! note 
-	The dedicated `foo_playcount` import option on the main `Library` menu has been removed in `0.1` final.
+### Data import / export
+You can import/export data either via the main menu > `Library>Playcount 2003` or use the context menu
+on any playlist/library selection. When importing, files must be `UTF8`. With or without `BOM` is
+fine. Exported files are always without `BOM`.
 
+### Command line support
+You can import `JSON` files via the command line like this:
+
+```
+.\foobar2000.exe /playcount_2003_import:filename.json
+```
+
+The file path must be relative to the user profile folder.
+
+## Simple mode
 The main `Edit` dialog found under the context menu > `Playcount 2003>Edit` now supports `Presets` and
 you can import data from `foo_playcount` or `foo_lastfm_playcount_sync` as illustrated here:
 
@@ -181,20 +192,6 @@ for (var i = 0; i < items.Count; i++) {
 var str = JSON.stringify(arr);
 // save to file
 ```
-
-## Data import / export
-You can import/export data either via the main menu > `Library>Playcount 2003` or use the context menu
-on any playlist/library selection. When importing, files must be `UTF8`. With or without `BOM` is fine
-as of `0.1` `Final`. Exported files are always without `BOM`.
-
-## Command line support
-Finally, you can import `JSON` files via the command line like this:
-
-```
-.\foobar2000.exe /playcount_2003_import:filename.json
-```
-
-The file path must be relative to the user profile folder.
 
 ## Changes
 
