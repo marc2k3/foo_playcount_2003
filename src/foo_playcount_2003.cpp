@@ -25,7 +25,7 @@ namespace Component
 
 	namespace
 	{
-		advconfig_branch_factory advconfig_branch(pfc::string8(name) + " (read documentation, changing settings causes data loss)", guids::advconfig_branch, advconfig_branch::guid_branch_tools, 0.0);
+		advconfig_branch_factory advconfig_branch(fmt::format("{} (read documentation, changing settings causes data loss)", name).c_str(), guids::advconfig_branch, advconfig_branch::guid_branch_tools, 0.0);
 		advconfig_string_factory advconfig_pin_to("Title format pattern", guids::advconfig_pin_to, guids::advconfig_branch, 0.0, path_subsong.data(), preferences_state::needs_restart);
 		advconfig_radio_factory advconfig_simple("Simple mode", guids::advconfig_simple, guids::advconfig_branch, 1.0, true, preferences_state::needs_restart);
 		advconfig_radio_factory advconfig_advanced("Advanced mode", guids::advconfig_advanced, guids::advconfig_branch, 2.0, false, preferences_state::needs_restart);
