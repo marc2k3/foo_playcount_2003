@@ -3,6 +3,8 @@ copyright: Copyright &copy; 2024 marc2003
 strict: true
 theme:
   name: material
+  icon:
+    logo: material/play-circle-outline
   features:
     - content.code.copy
     - navigation.sections
