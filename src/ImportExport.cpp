@@ -33,7 +33,7 @@ std::string ImportExport::from_file(metadb_handle_list_cref handles, std::string
 	const auto fs_path = get_fs_path(path);
 
 	std::error_code ec;
-	if (!std::filesystem::is_regular_file(fs_path))
+	if (!std::filesystem::is_regular_file(fs_path, ec))
 	{
 		return "File not found.";
 	}
