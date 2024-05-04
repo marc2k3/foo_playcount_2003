@@ -47,3 +47,10 @@ metadb_index_hash MetadbIndex::transform(const file_info& info, const playable_l
 	m_obj->run_simple(location, &info, str);
 	return hash_string(str);
 }
+
+pfc::string8 MetadbIndex::get_id(const metadb_handle_ptr& handle)
+{
+	pfc::string8 id;
+	handle->format_title(nullptr, id, m_obj, nullptr);
+	return id;
+}

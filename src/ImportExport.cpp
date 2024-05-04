@@ -185,9 +185,6 @@ void ImportExport::to_file(metadb_handle_list_cref handles)
 	pfc::string8 path;
 	if (!uGetOpenFileName(core_api::get_main_window(), "JSON file|*.json|All files|*.*", 0, "txt", "Save as", nullptr, path, TRUE)) return;
 
-	titleformat_object_ptr obj;
-	titleformat_compiler::get()->compile_safe(obj, Component::pin_to.get());
-
 	PlaybackStatistics::HashSet hash_set;
 	auto client = MetadbIndex::client();
 	auto data = JSON::array();
@@ -200,8 +197,7 @@ void ImportExport::to_file(metadb_handle_list_cref handles)
 			const auto f = PlaybackStatistics::get_fields(hash);
 			if (!f) continue;
 
-			pfc::string8 id;
-			handle->format_title(nullptr, id, obj, nullptr);
+			const auto id = client->get_id(handle);
 			auto entry = JSONHelper::create_export_entry(id, f);
 			data.emplace_back(entry);
 		}
