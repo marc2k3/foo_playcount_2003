@@ -195,6 +195,9 @@ var str = JSON.stringify(arr);
 
 ## Changes
 
+### 0.1.9
+- Fix `Edit` dialog text truncation and crash bugs.
+
 ### 0.1.8
 - The `Edit` dialog now supports dates in `YYYY-MM-DD` format. The time will be set to `00:00:00` automatically.
 
