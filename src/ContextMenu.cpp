@@ -85,6 +85,12 @@ namespace
 		{
 			pfc::string_list_impl list;
 			pfc::splitStringByChar(list, str.data(), '|');
+
+			if (list.get_count() != 5)
+			{
+				return false;
+			}
+
 			bool changed{};
 
 			const auto first_played = PlaybackStatistics::string_to_timestamp(list[0]);
