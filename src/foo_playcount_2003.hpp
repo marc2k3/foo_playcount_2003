@@ -13,4 +13,7 @@ namespace Component
 
 	extern cfg_bool simple_mode;
 	extern cfg_string pin_to;
+	extern advconfig_radio_factory advconfig_tracking_default;
+	extern advconfig_radio_factory advconfig_tracking_custom;
+	extern advconfig_string_factory advconfig_tracking_pattern;
 }

@@ -213,14 +213,14 @@
     <ClCompile Include="MetadbIndex.cpp" />
     <ClCompile Include="MetadbIOEditCallback.cpp" />
     <ClCompile Include="PlaybackStatistics.cpp" />
-    <ClCompile Include="PlaybackStatisticsCollector.cpp" />
+    <ClCompile Include="Tracking.cpp" />
+    <ClCompile Include="TrackPropertyProvider.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TrackPropertyProvider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
