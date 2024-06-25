@@ -23,7 +23,7 @@ The first thing you'll want to do after installing this is check `File>Preferenc
 
 ![playcount preferences](images/playcount-2003-preferences.png)
 
-It's important that settings are decided on before starting as any change causes immediate data loss.
+It's important that the main pattern and `Simple` or `Advanced` mode are decided on before starting as any change causes immediate data loss.
 `foobar2000` will prompt you to restart when changing any setting.
 
 ### Title format pattern
@@ -39,12 +39,33 @@ mean every track will have unique data.
 	%album artist%|%album%|%date%|%discnumber%|%tracknumber%|%title%
 	```
 
-## Common features
-Both `Simple` and `Advanced` mode have these same common features:
+### Log track as played
+!!! note
+	This is only available in component version `0.2` and later. These settings can be changed at anytime.
 
-- database records are remembered for 4 weeks when not monitored as part of the `Media Library` or any loaded playlist. This behaviour is the same as `foo_playcount`.
-- Like `foo_playcount`, tracks are logged after one minute of playback or when playback ends if shorter than one minute.
+The default is to use the same internal method as `foo_playcount`. This means you have to listen to at least 1 minute for it to count. You have to listen to the whole track if it's shorter.
 
+Now you can customise the time in seconds by entering a number or making it dynamic by using title formatting.
+
+You must take care to cover every scenario because there is no safety net. For example if you enter `30`, no track shorter than that will ever count.
+
+Therefore, you would have to consider using `%length_seconds%`
+
+!!! example
+	```
+	// 20%
+	$div(%length_seconds%,5)
+
+	// half the track length or 30 seconds, whichever is lower
+	$if(%length_seconds%,$min($div(%length_seconds%,2),30),)
+	```
+
+If the title format pattern does not evaluate to a number, the track won't be logged.
+
+## Data retention
+Database records are remembered for 4 weeks when not monitored as part of the `Media Library` or any loaded playlist. This behaviour is the same as `foo_playcount`.
+
+## Available fields
 These fields are available globally in `foobar2000` in any playlist columns/search/3rd party panel.
 
 ``` markdown title="Full date/time strings"
@@ -127,12 +148,12 @@ The component will not check if selection items belong to the library when writi
 	internally, zero is reserved for indicating not set. The latest value is some time in the year 2106
 	because 32bit unsigned integers are used for storage.
 
-### Data import / export
+## Data import / export
 You can import/export data either via the main menu > `Library>Playcount 2003` or use the context menu
 on any playlist/library selection. When importing, files must be `UTF8`. With or without `BOM` is
 fine. Exported files are always without `BOM`.
 
-### Command line support
+## Command line support
 You can import `JSON` files via the command line like this:
 
 ```
@@ -194,6 +215,9 @@ var str = JSON.stringify(arr);
 ```
 
 ## Changes
+
+### 0.2
+- You can now configure how much you have to listen to a track before it counts as a play. The default using the same rules as `foo_playcount` remains unchanged. See [here]().
 
 ### 0.1.9
 - Fix `Edit` dialog text truncation and crash bugs.
