@@ -217,7 +217,7 @@ var str = JSON.stringify(arr);
 ## Changes
 
 ### 0.2
-- You can now configure how much you have to listen to a track before it counts as a play. The default using the same rules as `foo_playcount` remains unchanged. See [here]().
+- You can now configure how much you have to listen to a track before it counts as a play. The default using the same rules as `foo_playcount` remains unchanged. See [here](#log-track-as-played).
 
 ### 0.1.9
 - Fix `Edit` dialog text truncation and crash bugs.
