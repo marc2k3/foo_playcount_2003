@@ -2,6 +2,8 @@
 
 namespace
 {
+	bool g_tracked{};
+
 	class PlayCallbackStatic : public play_callback_static
 	{
 	public:
@@ -12,6 +14,7 @@ namespace
 
 		void on_playback_new_track(metadb_handle_ptr handle) final
 		{
+			g_tracked = false;
 			elapsed_time = 0;
 			target_time = SIZE_MAX;
 
@@ -34,7 +37,7 @@ namespace
 
 		void on_playback_time(double) final
 		{
-			if (target_time == SIZE_MAX) return;
+			if (g_tracked || target_time == SIZE_MAX) return;
 
 			elapsed_time++;
 
@@ -43,12 +46,13 @@ namespace
 				metadb_handle_ptr handle;
 				playback_control::get()->get_now_playing(handle);
 				PlaybackStatistics::on_item_played(handle);
+				g_tracked = true;
 			}
 		}
 
 		void on_playback_dynamic_info(const file_info&) final {}
 		void on_playback_dynamic_info_track(const file_info&) final {}
-		void on_playback_edited(metadb_handle_ptr ) final {}
+		void on_playback_edited(metadb_handle_ptr) final {}
 		void on_playback_pause(bool) final {}
 		void on_playback_seek(double) final {}
 		void on_playback_starting(playback_control::t_track_command, bool) {}
@@ -64,9 +68,10 @@ namespace
 	public:
 		void on_item_played(metadb_handle_ptr handle) final
 		{
-			if (Component::advconfig_tracking_default.get())
+			if (Component::advconfig_tracking_default.get() && !g_tracked)
 			{
 				PlaybackStatistics::on_item_played(handle);
+				g_tracked = true;
 			}
 		}
 	};
