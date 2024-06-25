@@ -49,7 +49,7 @@ Now you can customise the time in seconds by entering a number or making it dyna
 
 You must take care to cover every scenario because there is no safety net. For example if you enter `30`, no track shorter than that will ever count.
 
-Therefore, you would have to consider using `%length_seconds%`
+Therefore you should consider using `%length_seconds%`.
 
 !!! example
 	```
