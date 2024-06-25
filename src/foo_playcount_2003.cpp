@@ -30,7 +30,7 @@ namespace Component
 	advconfig_branch_factory advconfig_branch_tracking("Log track as played", guids::advconfig_branch_tracking, guids::advconfig_branch, 3.0);
 	advconfig_radio_factory advconfig_tracking_default("default (same as foo_playcount)", guids::advconfig_tracking_default, guids::advconfig_branch_tracking, 4.0, true);
 	advconfig_radio_factory advconfig_tracking_custom("using title format", guids::advconfig_tracking_custom, guids::advconfig_branch_tracking, 5.0, false);
-	advconfig_string_factory advconfig_tracking_pattern("Title format pattern", guids::advconfig_tracking_pattern, guids::advconfig_branch_tracking, 6.0, "");
+	advconfig_string_factory advconfig_tracking_pattern("Title format pattern (must evaluate to a number in seconds)", guids::advconfig_tracking_pattern, guids::advconfig_branch_tracking, 6.0, "");
 
 	void init()
 	{
