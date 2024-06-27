@@ -9,13 +9,13 @@ CDialogEdit::CDialogEdit()
 	, m_history_rating(guids::history_rating) {}
 
 #pragma region static
-bool CDialogEdit::CheckComponent(const pfc::string& name)
+bool CDialogEdit::CheckComponent(std::string_view name)
 {
 	for (auto ptr : componentversion::enumerate())
 	{
 		pfc::string8 str;
 		ptr->get_file_name(str);
-		if (stricmp_utf8(str, name) == 0)
+		if (stricmp_utf8(str, name.data()) == 0)
 		{
 			return true;
 		}
@@ -24,15 +24,20 @@ bool CDialogEdit::CheckComponent(const pfc::string& name)
 	return false;
 }
 
-bool CDialogEdit::GetMenuFlag(const pfc::string8& name)
+uint32_t CDialogEdit::GetMenuFlag(std::string_view name)
 {
 	return CheckComponent(name) ? MF_STRING : MF_GRAYED;
 }
 
-bool CDialogEdit::IsTF(std::string_view str)
+void CDialogEdit::AddHistoryItem(cfg_dropdown_history& history, std::string_view str)
 {
-	return str.contains("%") || str.contains("$");
+	// don't want to remember plain text values, only title format
+	if (str.contains("%") || str.contains("$"))
+	{
+		history.add_item(str.data());
+	}
 }
+
 #pragma endregion
 
 BOOL CDialogEdit::OnInitDialog(CWindow, LPARAM)
@@ -93,11 +98,11 @@ void CDialogEdit::OnCloseCmd(uint32_t, int nID, CWindow)
 		m_playcount = pfc::getWindowText(m_window_playcount);
 		m_rating = pfc::getWindowText(m_window_rating);
 
-		if (IsTF(m_added)) m_history_added.add_item(m_added);
-		if (IsTF(m_first_played)) m_history_first_played.add_item(m_first_played);
-		if (IsTF(m_last_played)) m_history_last_played.add_item(m_last_played);
-		if (IsTF(m_playcount)) m_history_playcount.add_item(m_playcount);
-		if (IsTF(m_rating)) m_history_playcount.add_item(m_rating);
+		AddHistoryItem(m_history_added, m_added);
+		AddHistoryItem(m_history_first_played, m_first_played);
+		AddHistoryItem(m_history_last_played, m_last_played);
+		AddHistoryItem(m_history_playcount, m_playcount);
+		AddHistoryItem(m_history_playcount, m_rating);
 	}
 
 	EndDialog(nID);

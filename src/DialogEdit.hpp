@@ -22,9 +22,9 @@ public:
 	pfc::string8 m_added, m_first_played, m_last_played, m_playcount, m_rating;
 
 private:
-	static bool CheckComponent(const pfc::string& name);
-	static bool GetMenuFlag(const pfc::string8& name);
-	static bool IsTF(std::string_view str);
+	static bool CheckComponent(std::string_view name);
+	static uint32_t GetMenuFlag(std::string_view name);
+	static void AddHistoryItem(cfg_dropdown_history& history, std::string_view str);
 
 	BOOL OnInitDialog(CWindow, LPARAM);
 	void OnClear(uint32_t, int, CWindow);
