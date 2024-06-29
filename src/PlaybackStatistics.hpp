@@ -34,4 +34,6 @@ public:
 	static void on_item_played(const metadb_handle_ptr& handle);
 	static void refresh(const HashList& to_refresh);
 	static void set_fields(const metadb_index_transaction::ptr& ptr, metadb_index_hash hash, const Fields& f);
+	static void set_loved(metadb_handle_list_cref handles, bool loved);
+	static void set_rating(metadb_handle_list_cref handles, uint32_t rating);
 };

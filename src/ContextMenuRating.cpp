@@ -55,20 +55,9 @@ namespace
 
 		void context_command(uint32_t index, metadb_handle_list_cref handles, const GUID&) final
 		{
-			PlaybackStatistics::HashList to_refresh;
-			const auto hashes = PlaybackStatistics::get_hashes(handles);
-			auto ptr = PlaybackStatistics::api()->begin_transaction();
+			if (index >= context_guids.size()) FB2K_BugCheck();
 
-			for (auto&& hash : hashes)
-			{
-				auto f = PlaybackStatistics::get_fields(hash);
-				f.rating = index;
-				PlaybackStatistics::set_fields(ptr, hash, f);
-				to_refresh.add_item(hash);
-			}
-
-			ptr->commit();
-			PlaybackStatistics::refresh(to_refresh);
+			PlaybackStatistics::set_rating(handles, index);
 		}
 
 		void get_item_name(uint32_t index, pfc::string_base& out) final

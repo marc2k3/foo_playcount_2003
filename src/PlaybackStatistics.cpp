@@ -241,3 +241,48 @@ void PlaybackStatistics::set_fields(const metadb_index_transaction::ptr& ptr, me
 
 	ptr->set_user_data(guids::metadb_index, hash, writer.m_buffer.get_ptr(), writer.m_buffer.get_size());
 }
+
+void PlaybackStatistics::set_loved(metadb_handle_list_cref handles, bool loved)
+{
+	HashList to_refresh;
+	const auto hashes = get_hashes(handles);
+	auto ptr = api()->begin_transaction();
+
+	for (auto&& hash : hashes)
+	{
+		auto f = get_fields(hash);
+
+		if (loved)
+		{
+			f.loved = 1;
+		}
+		else
+		{
+			f.loved = 0;
+		}
+
+		set_fields(ptr, hash, f);
+		to_refresh.add_item(hash);
+	}
+
+	ptr->commit();
+	refresh(to_refresh);
+}
+
+void PlaybackStatistics::set_rating(metadb_handle_list_cref handles, uint32_t rating)
+{
+	HashList to_refresh;
+	const auto hashes = get_hashes(handles);
+	auto ptr = api()->begin_transaction();
+
+	for (auto&& hash : hashes)
+	{
+		auto f = get_fields(hash);
+		f.rating = rating;
+		set_fields(ptr, hash, f);
+		to_refresh.add_item(hash);
+	}
+
+	ptr->commit();
+	refresh(to_refresh);
+}

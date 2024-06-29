@@ -59,7 +59,7 @@ namespace
 				break;
 			case 1:
 			case 2:
-				love(handles, index == 1 ? 1 : 0);
+				PlaybackStatistics::set_loved(handles, index == 1);
 				break;
 			case 3:
 				PlaybackStatistics::clear(handles);
@@ -199,24 +199,6 @@ namespace
 				if (tf == "||||") return;
 				import_from_dialog_tf(handles, tf);
 			}
-		}
-
-		void love(metadb_handle_list_cref handles, uint32_t value)
-		{
-			PlaybackStatistics::HashList to_refresh;
-			const auto hashes = PlaybackStatistics::get_hashes(handles);
-			auto ptr = PlaybackStatistics::api()->begin_transaction();
-
-			for (auto&& hash : hashes)
-			{
-				auto f = PlaybackStatistics::get_fields(hash);
-				f.loved = value;
-				PlaybackStatistics::set_fields(ptr, hash, f);
-				to_refresh.add_item(hash);
-			}
-
-			ptr->commit();
-			PlaybackStatistics::refresh(to_refresh);
 		}
 	};
 
