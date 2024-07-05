@@ -45,22 +45,28 @@ mean every track will have unique data.
 
 The default is to use the same internal method as `foo_playcount`. This means you have to listen to at least 1 minute for it to count. You have to listen to the whole track if it's shorter.
 
-Now you can customise the time in seconds by entering a number or making it dynamic by using title formatting.
+Now you can customise the time in seconds by entering a number or making it dynamic by using title formatting. If the title format pattern does not evaluate to a number, the track won't be logged.
 
 You must take care to cover every scenario because there is no safety net. For example if you enter `30`, no track shorter than that will ever count.
 
 Therefore you should consider using `%length_seconds%`.
 
 !!! example
-	```
-	// 20%
+	``` markdown title="20%"
 	$div(%length_seconds%,5)
+	```
 
-	// half the track length or 30 seconds, whichever is lower
+	``` markdown title="Half the track length or 30 seconds, whichever is lower."
 	$if(%length_seconds%,$min($div(%length_seconds%,2),30),)
 	```
 
-If the title format pattern does not evaluate to a number, the track won't be logged.
+	``` markdown title="The whole track"
+	$sub(%length_seconds%,1)
+	```
+
+!!! note
+	For this last example, you cannot use `%length_seconds%` on its own because lengths may be rounded up
+	and the counter will never reach it.
 
 ## Data retention
 Database records are remembered for 4 weeks when not monitored as part of the `Media Library` or any loaded playlist. This behaviour is the same as `foo_playcount`.
