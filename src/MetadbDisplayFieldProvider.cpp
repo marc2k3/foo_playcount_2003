@@ -36,7 +36,6 @@ namespace
 
 		bool process_field_v2(uint32_t index, metadb_handle* handle, const metadb_v2::rec_t& rec, titleformat_text_out* out) final
 		{
-			if (write_now(out, index)) return true;
 			if (rec.info.is_empty()) return false;
 
 			const auto hash = MetadbIndex::client()->transform(rec.info->info(), handle->get_location());
@@ -44,15 +43,18 @@ namespace
 
 			switch (index)
 			{
+			case 0:
+			case 1:
+				return write_now(out, index == 0);
 			case 2:
 			case 3:
-				return write_ts(out, f.first_played, index);
+				return write_ts(out, f.first_played, index == 2);
 			case 4:
 			case 5:
-				return write_ts(out, f.last_played, index);
+				return write_ts(out, f.last_played, index == 4);
 			case 6:
 			case 7:
-				return write_ts(out, f.added, index);
+				return write_ts(out, f.added, index == 6);
 			case 8:
 				return write_num(out, f.loved);
 			case 9:
@@ -117,7 +119,6 @@ namespace
 			const auto now = PlaybackStatistics::now();
 			if (ts == 0 || ts > now) return false;
 
-			bool include_weeks_days = true;
 			pfc::string8 str;
 			uint32_t diff = now - ts;
 
@@ -139,39 +140,40 @@ namespace
 				{
 					str = "1d";
 				}
-
-				out->write(titleformat_inputtypes::unknown, str);
-				return true;
 			}
-
-			const auto years = diff / year_in_seconds;
-			if (years > 0)
+			else
 			{
-				include_weeks_days = false;
-				diff -= years * year_in_seconds;
-				str << years << "y ";
-			}
+				bool include_weeks_days = true;
 
-			const auto months = diff / month_in_seconds;
-			if (months > 0)
-			{
-				diff -= months * month_in_seconds;
-				str << months << "m ";
-			}
-
-			if (include_weeks_days)
-			{
-				const auto weeks = diff / week_in_seconds;
-				if (weeks > 0)
+				const auto years = diff / year_in_seconds;
+				if (years > 0)
 				{
-					diff -= weeks * week_in_seconds;
-					str << weeks << "w ";
+					include_weeks_days = false;
+					diff -= years * year_in_seconds;
+					str << years << "y ";
 				}
 
-				const auto days = diff / day_in_seconds;
-				if (days > 0)
+				const auto months = diff / month_in_seconds;
+				if (months > 0)
 				{
-					str << days << "d";
+					diff -= months * month_in_seconds;
+					str << months << "m ";
+				}
+
+				if (include_weeks_days)
+				{
+					const auto weeks = diff / week_in_seconds;
+					if (weeks > 0)
+					{
+						diff -= weeks * week_in_seconds;
+						str << weeks << "w ";
+					}
+
+					const auto days = diff / day_in_seconds;
+					if (days > 0)
+					{
+						str << days << "d";
+					}
 				}
 			}
 
@@ -179,12 +181,9 @@ namespace
 			return true;
 		}
 
-		bool write_now(titleformat_text_out* out, uint32_t index)
+		bool write_now(titleformat_text_out* out, bool as_string)
 		{
-			if (index > 1) return false;
-
 			const auto now = PlaybackStatistics::now();
-			const bool as_string = index % 2 == 0;
 
 			if (as_string)
 			{
@@ -207,11 +206,9 @@ namespace
 			return true;
 		}
 
-		bool write_ts(titleformat_text_out* out, uint32_t ts, uint32_t index)
+		bool write_ts(titleformat_text_out* out, uint32_t ts, bool as_string)
 		{
 			if (ts == 0) return false;
-
-			const bool as_string = index % 2 == 0;
 
 			if (as_string)
 			{
