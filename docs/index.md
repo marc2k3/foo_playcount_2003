@@ -249,8 +249,6 @@ var str = JSON.stringify(arr);
 %2003_last_played_ago2%
 ```
 
-See [here](#common-features)
-
 ### 0.1.3
 - Editing values via the context menu now reports how many items were updated in the console.
 - The file importer now accurately reports how many items were updated by only counting when values were modified.
