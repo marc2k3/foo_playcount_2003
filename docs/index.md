@@ -222,6 +222,9 @@ var str = JSON.stringify(arr);
 
 ## Changes
 
+### 0.2.1
+- Rewrite how plays are logged in `default` mode.
+
 ### 0.2
 - You can now configure how much you have to listen to a track before it counts as a play. The default using the same rules as `foo_playcount` remains unchanged. See [here](#log-track-as-played).
 
