@@ -18,9 +18,15 @@ namespace
 			elapsed_time = 0;
 			target_time = SIZE_MAX;
 
-			if (handle->get_length() <= 0.0) return;
+			const auto length = handle->get_length();
+			if (length <= 0.0) return;
 
-			if (Component::advconfig_tracking_custom.get())
+			if (Component::advconfig_tracking_default.get())
+			{
+				const auto tmp = std::floor(std::min(length - 1.0, 60.0));
+				target_time = static_cast<size_t>(tmp);
+			}
+			else
 			{
 				titleformat_object_ptr ptr;
 				titleformat_compiler::get()->compile_safe(ptr, Component::advconfig_tracking_pattern.get());
@@ -63,19 +69,5 @@ namespace
 		size_t elapsed_time{}, target_time{};
 	};
 
-	class PlaybackStatisticsCollector : public playback_statistics_collector
-	{
-	public:
-		void on_item_played(metadb_handle_ptr handle) final
-		{
-			if (Component::advconfig_tracking_default.get() && !g_tracked)
-			{
-				PlaybackStatistics::on_item_played(handle);
-				g_tracked = true;
-			}
-		}
-	};
-
 	FB2K_SERVICE_FACTORY(PlayCallbackStatic);
-	FB2K_SERVICE_FACTORY(PlaybackStatisticsCollector);
 }
