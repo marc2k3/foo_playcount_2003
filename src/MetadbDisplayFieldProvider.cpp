@@ -36,7 +36,8 @@ namespace
 
 		bool process_field_v2(uint32_t index, metadb_handle* handle, const metadb_v2::rec_t& rec, titleformat_text_out* out) final
 		{
-			if (rec.info.is_empty()) return false;
+			if (rec.info.is_empty())
+				return false;
 
 			const auto hash = MetadbIndex::client()->transform(rec.info->info(), handle->get_location());
 			const auto f = PlaybackStatistics::get_fields(hash);
@@ -74,16 +75,20 @@ namespace
 			case 16:
 				return ago2(out, f.added);
 			case 17:
-				if (Component::simple_mode) return false;
+				if (Component::simple_mode)
+					return false;
+				
 				out->write(titleformat_inputtypes::meta, f.timestamps);
 				return true;
 			case 18:
 			case 19:
 				{
-					if (Component::simple_mode) return false;
+					if (Component::simple_mode)
+						return false;
 
 					const auto playcount = PlaybackStatistics::playcount_year(f, index == 19);
-					if (playcount == 0) return false;
+					if (playcount == 0)
+						return false;
 
 					out->write_int(titleformat_inputtypes::meta, playcount);
 					return true;
@@ -107,7 +112,8 @@ namespace
 		bool ago(titleformat_text_out* out, uint32_t ts)
 		{
 			const auto now = PlaybackStatistics::now();
-			if (ts == 0 || ts > now) return false;
+			if (ts == 0 || ts > now)
+				return false;
 
 			const double diff = static_cast<double>(now - ts);
 			out->write(titleformat_inputtypes::unknown, pfc::format_time_ex(diff, 0));
@@ -117,7 +123,8 @@ namespace
 		bool ago2(titleformat_text_out* out, uint32_t ts)
 		{
 			const auto now = PlaybackStatistics::now();
-			if (ts == 0 || ts > now) return false;
+			if (ts == 0 || ts > now)
+				return false;
 
 			pfc::string8 str;
 			uint32_t diff = now - ts;
@@ -200,7 +207,8 @@ namespace
 
 		bool write_num(titleformat_text_out* out, uint32_t num)
 		{
-			if (num == 0) return false;
+			if (num == 0)
+				return false;
 
 			out->write_int(titleformat_inputtypes::meta, num);
 			return true;
@@ -208,7 +216,8 @@ namespace
 
 		bool write_ts(titleformat_text_out* out, uint32_t ts, bool as_string)
 		{
-			if (ts == 0) return false;
+			if (ts == 0)
+				return false;
 
 			if (as_string)
 			{

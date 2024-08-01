@@ -51,7 +51,8 @@ PlaybackStatistics::HashSet PlaybackStatistics::get_hashes(metadb_handle_list_cr
 
 bool PlaybackStatistics::update_value(uint32_t new_value, uint32_t& old_value)
 {
-	if (new_value == UINT_MAX || new_value == old_value) return false;
+	if (new_value == UINT_MAX || new_value == old_value)
+		return false;
 
 	old_value = new_value;
 	return true;
@@ -118,7 +119,8 @@ uint32_t PlaybackStatistics::now()
 
 uint32_t PlaybackStatistics::playcount_year(const Fields& f, bool last_year)
 {
-	if (f.playcount == 0) return 0;
+	if (f.playcount == 0)
+		return 0;
 
 	const auto now_ts = now();
 	auto target_year = get_year(now_ts);
@@ -140,9 +142,11 @@ uint32_t PlaybackStatistics::playcount_year(const Fields& f, bool last_year)
 uint32_t PlaybackStatistics::string_to_timestamp(std::string_view str)
 {
 	// special handling for edit dialog
-	if (str == "0") return 0;
+	if (str == "0")
+		return 0;
 
-	if (str.empty()) return UINT_MAX;
+	if (str.empty())
+		return UINT_MAX;
 
 	static const auto lower_limit = pfc::fileTimeUtoW(1);
 	static const auto upper_limit = pfc::fileTimeUtoW(UINT_MAX);
@@ -158,7 +162,8 @@ uint32_t PlaybackStatistics::string_to_timestamp(std::string_view str)
 		windows_time = pfc::filetimestamp_from_string(str.data());
 	}
 
-	if (windows_time == filetimestamp_invalid || windows_time < lower_limit || windows_time > upper_limit) return UINT_MAX;
+	if (windows_time == filetimestamp_invalid || windows_time < lower_limit || windows_time > upper_limit)
+		return UINT_MAX;
 
 	return windows_to_unix(windows_time);
 }

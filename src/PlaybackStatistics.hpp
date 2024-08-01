@@ -10,8 +10,12 @@ public:
 
 		operator bool() const
 		{
-			if (loved || rating || playcount) return true;
-			if (Component::simple_mode) return first_played || last_played;
+			if (loved || rating || playcount)
+				return true;
+			
+			if (Component::simple_mode)
+				return first_played || last_played;
+			
 			return false;
 		}
 	};
