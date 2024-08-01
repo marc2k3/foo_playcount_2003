@@ -23,7 +23,7 @@ namespace
 
 			if (Component::advconfig_tracking_default.get())
 			{
-				const auto tmp = std::floor(std::min(length - 1.0, 60.0));
+				const auto tmp = std::min(std::floor(length), 60.0);
 				target_time = static_cast<size_t>(tmp);
 			}
 			else
