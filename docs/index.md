@@ -43,7 +43,7 @@ mean every track will have unique data.
 !!! note
 	This is only available in component version `0.2` and later. These settings can be changed at anytime.
 
-The default is to use the same internal method as `foo_playcount`. This means you have to listen to at least 1 minute for it to count. You have to listen to the whole track if it's shorter.
+The default is to use the same rules as `foo_playcount`. This means you have to listen to at least 1 minute for it to count. If the track is shorter than one minute, you have to listen to all of it.
 
 Now you can customise the time in seconds by entering a number or making it dynamic by using title formatting. If the title format pattern does not evaluate to a number, the track won't be logged.
 
