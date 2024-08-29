@@ -8,7 +8,8 @@ namespace
 		void on_edited(metadb_handle_list_cref handles, t_infosref before, t_infosref after)
 		{
 			// ignore tag updates if bound to path/subsong
-			if (Component::pin_to.get() == Component::path_subsong.data()) return;
+			if (Component::pin_to.get() == Component::path_subsong.data())
+				return;
 
 			PlaybackStatistics::HashList hash_list;
 			PlaybackStatistics::HashSet hash_set;
@@ -21,8 +22,11 @@ namespace
 				const auto old_hash = client->transform(*before[i], location);
 				const auto new_hash = client->transform(*after[i], location);
 
-				if (old_hash == new_hash) continue;
-				if (!hash_set.emplace(new_hash).second) continue;
+				if (old_hash == new_hash)
+					continue;
+				
+				if (!hash_set.emplace(new_hash).second)
+					continue;
 
 				const auto f = PlaybackStatistics::get_fields(old_hash);
 				PlaybackStatistics::set_fields(ptr, new_hash, f);

@@ -27,7 +27,8 @@ namespace
 
 		void on_files(t_pathlist from, t_pathlist to)
 		{
-			if (Component::pin_to.get() != Component::path_subsong.data()) return;
+			if (Component::pin_to.get() != Component::path_subsong.data())
+				return;
 
 			PlaybackStatistics::HashList to_refresh;
 			auto client = MetadbIndex::client();

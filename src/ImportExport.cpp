@@ -62,12 +62,15 @@ std::string ImportExport::from_file(metadb_handle_list_cref handles, std::string
 	for (auto&& record : records)
 	{
 		auto& jid = record["id"];
-		if (!jid.is_string()) continue; // not a good sign but we'll persist
+		if (!jid.is_string())
+			continue; // not a good sign but we'll persist
 
 		const auto id = jid.get<std::string>();
 		const auto hash = client->hash_string(id);
 
-		if (!hashes.contains(hash)) continue; // hash not found in set for a given handle list
+		if (!hashes.contains(hash))
+			continue; // hash not found in set for a given handle list
+		
 		hashes.erase(hash); // this hash exists but remove it so any future duplicate is skipped
 
 		matches++;
@@ -97,7 +100,8 @@ std::string ImportExport::from_file(metadb_handle_list_cref handles, std::string
 					if (timestamp.is_number_unsigned())
 					{
 						const auto ts64 = timestamp.get<uint64_t>();
-						if (ts64 == 0 || ts64 > UINT_MAX) continue;
+						if (ts64 == 0 || ts64 > UINT_MAX)
+							continue;
 
 						const auto ts = static_cast<uint32_t>(ts64);
 						v.emplace_back(ts);
@@ -169,7 +173,8 @@ uint32_t ImportExport::get_uint32(JSON& json, uint32_t upper_limit)
 void ImportExport::from_file(metadb_handle_list_cref handles)
 {
 	pfc::string8 path;
-	if (!uGetOpenFileName(core_api::get_main_window(), "JSON file|*.json|All files|*.*", 0, "txt", "Import from", nullptr, path, FALSE)) return;
+	if (!uGetOpenFileName(core_api::get_main_window(), "JSON file|*.json|All files|*.*", 0, "txt", "Import from", nullptr, path, FALSE))
+		return;
 
 	const auto msg = from_file(handles, path);
 	popup(msg);
@@ -183,7 +188,8 @@ void ImportExport::popup(std::string_view msg)
 void ImportExport::to_file(metadb_handle_list_cref handles)
 {
 	pfc::string8 path;
-	if (!uGetOpenFileName(core_api::get_main_window(), "JSON file|*.json|All files|*.*", 0, "txt", "Save as", nullptr, path, TRUE)) return;
+	if (!uGetOpenFileName(core_api::get_main_window(), "JSON file|*.json|All files|*.*", 0, "txt", "Save as", nullptr, path, TRUE))
+		return;
 
 	PlaybackStatistics::HashSet hash_set;
 	auto client = MetadbIndex::client();
@@ -195,7 +201,8 @@ void ImportExport::to_file(metadb_handle_list_cref handles)
 		if (client->hashHandle(handle, hash) && hash_set.emplace(hash).second)
 		{
 			const auto f = PlaybackStatistics::get_fields(hash);
-			if (!f) continue;
+			if (!f)
+				continue;
 
 			const auto id = client->get_id(handle);
 			auto entry = JSONHelper::create_export_entry(id, f);

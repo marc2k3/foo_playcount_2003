@@ -18,7 +18,8 @@ namespace
 				if (count == 1)
 				{
 					auto rec = source.get_info(0);
-					if (rec.info.is_empty()) return;
+					if (rec.info.is_empty())
+						return;
 
 					const auto hash = MetadbIndex::client()->transform(rec.info->info(), handles[0]->get_location());
 					const auto f = PlaybackStatistics::get_fields(hash);

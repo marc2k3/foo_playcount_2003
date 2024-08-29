@@ -175,7 +175,8 @@ namespace
 		void init_dialog(metadb_handle_list_cref handles)
 		{
 			modal_dialog_scope scope;
-			if (!scope.can_create()) return;
+			if (!scope.can_create())
+				return;
 
 			auto wnd = core_api::get_main_window();
 			scope.initialize(wnd);
@@ -196,7 +197,9 @@ namespace
 			if (dlg.DoModal(wnd) == IDOK)
 			{
 				const auto tf = pfc::format(dlg.m_first_played, "|", dlg.m_last_played, "|", dlg.m_added, "|", dlg.m_playcount, "|", dlg.m_rating);
-				if (tf == "||||") return;
+				if (tf == "||||")
+					return;
+
 				import_from_dialog_tf(handles, tf);
 			}
 		}

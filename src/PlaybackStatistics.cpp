@@ -79,7 +79,8 @@ uint32_t PlaybackStatistics::get_total_playcount(metadb_handle_list_cref handles
 	for (const size_t i : std::views::iota(size_t{}, handles.get_count()))
 	{
 		auto rec = source.get_info(i);
-		if (rec.info.is_empty()) continue;
+		if (rec.info.is_empty())
+			continue;
 
 		const auto hash = client->transform(rec.info->info(), handles[i]->get_location());
 		if (hash_set.emplace(hash).second)

@@ -39,7 +39,8 @@ namespace
 		{
 			static const auto filter = search_filter_manager_v2::get()->create_ex("%2003_added% MISSING", fb2k::service_new<completion_notify_dummy>(), search_filter_manager_v2::KFlagSuppressNotify);
 			auto arr = index->search(filter, nullptr, 0, fb2k::noAbort);
-			if (arr->get_count() == 0) return;
+			if (arr->get_count() == 0)
+				return;
 
 			PlaybackStatistics::HashList to_refresh;
 			const auto now = PlaybackStatistics::now();

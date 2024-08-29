@@ -51,7 +51,8 @@ namespace
 			if (index >= main_items.size()) FB2K_BugCheck();
 
 			const auto items = get_library_items();
-			if (items.get_count() == 0) return;
+			if (items.get_count() == 0)
+				return;
 
 			switch (index)
 			{
