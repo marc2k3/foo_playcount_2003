@@ -21,7 +21,7 @@ namespace Component
 	FB2K_SERVICE_FACTORY(InstallationValidator);
 
 	cfg_bool simple_mode(guids::cfg_bool_simple, true);
-	cfg_string pin_to(guids::cfg_string_pin_to, "");
+	cfg_string pin_to(guids::cfg_string_pin_to, path_subsong.data());
 
 	advconfig_branch_factory advconfig_branch(fmt::format("{} (read documentation, changing settings may cause data loss)", name).c_str(), guids::advconfig_branch, advconfig_branch::guid_branch_tools, 0.0);
 	advconfig_string_factory advconfig_pin_to("Title format pattern", guids::advconfig_pin_to, guids::advconfig_branch, 0.0, path_subsong.data(), preferences_state::needs_restart);
